@@ -16,8 +16,12 @@ const CheckoutButton = () => {
         0,
     );
 
+    const isCartEmpty = productsCount === 0 ? "hidden" : "show";
+
     return (
-        <div className="sticky bottom-0 bg-white p-5 flex justify-center">
+        <div
+            className={`sticky bottom-0 bg-white p-5 flex justify-center ${isCartEmpty}`}
+        >
             <PrimaryButton className="grid grid-rows-3 grid-flow-col rounded-xl">
                 <div className="row-span-3">
                     <FontAwesomeIcon
