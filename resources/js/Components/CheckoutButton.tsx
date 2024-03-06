@@ -18,7 +18,7 @@ const CheckoutButton = () => {
 
     return (
         <div className="sticky bottom-0 bg-white p-5 flex justify-center">
-            <PrimaryButton className="grid grid-rows-3 grid-flow-col">
+            <PrimaryButton className="grid grid-rows-3 grid-flow-col rounded-xl">
                 <div className="row-span-3">
                     <FontAwesomeIcon
                         icon={faCartShopping}
