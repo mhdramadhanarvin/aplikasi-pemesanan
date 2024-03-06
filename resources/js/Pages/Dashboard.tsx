@@ -11,26 +11,31 @@ export default function Dashboard({ auth }: PageProps) {
             id: 1,
             item_name: "Item 1",
             price: 10500,
+            quantity: 100,
         },
         {
             id: 2,
             item_name: "Item 2",
             price: 10500,
+            quantity: 100,
         },
         {
             id: 3,
             item_name: "Item 3",
             price: 10500,
+            quantity: 100,
         },
         {
             id: 4,
             item_name: "Item 4",
             price: 10500,
+            quantity: 100,
         },
         {
             id: 5,
             item_name: "Item 5",
             price: 10500,
+            quantity: 100,
         },
     ]);
 
@@ -53,7 +58,7 @@ export default function Dashboard({ auth }: PageProps) {
                                 Menu Spesial Untuk Kamu
                             </h1>
                         </div>
-                        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
                             {rowData.map((data: ItemType, key: number) => (
                                 <CardItem key={key} item={data} />
                             ))}
