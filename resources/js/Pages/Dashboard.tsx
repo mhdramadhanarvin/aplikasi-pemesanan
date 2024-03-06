@@ -4,6 +4,8 @@ import { PageProps } from "@/types";
 import { useState } from "react";
 import CardItem from "@/Components/CardItem";
 import { ItemType } from "@/types/ItemType";
+import PrimaryButton from "@/Components/PrimaryButton";
+import CheckoutButton from "@/Components/CheckoutButton";
 
 export default function Dashboard({ auth }: PageProps) {
     const [rowData, setRowData] = useState<ItemType[]>([
@@ -66,6 +68,8 @@ export default function Dashboard({ auth }: PageProps) {
                     </div>
                 </div>
             </div>
+
+            <CheckoutButton />
         </AuthenticatedLayout>
     );
 }
