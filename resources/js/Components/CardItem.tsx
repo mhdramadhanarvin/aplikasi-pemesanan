@@ -1,4 +1,3 @@
-import Currency from "@/Common/Currency";
 import { ItemType } from "@/types/ItemType";
 import PrimaryButton from "./PrimaryButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -7,6 +6,7 @@ import { Quantifier } from "./Quantifier";
 import { CartType } from "@/types/CartType";
 import { Operation } from "./Quantifier/Quantifier";
 import useLocalStorageState from "use-local-storage-state";
+import { Currency } from "@/Common/Currency";
 
 interface Props {
     item: ItemType;
@@ -63,7 +63,7 @@ const CardItem = ({ item }: Props) => {
             <div className="relative">
                 <img
                     className="w-full h:52 lg:h-60 rounded-xl"
-                    src="https://i0.wp.com/resepkoki.id/wp-content/uploads/2020/10/Resep-Bakso-Bakar-Pedas-Manis-1.jpg?fit=438%2C496&ssl=1"
+                    src={item.thumbnail}
                     alt="Sunset in the mountains"
                 />
             </div>
