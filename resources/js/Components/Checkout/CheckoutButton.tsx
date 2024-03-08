@@ -1,7 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-    faCartShopping,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import { CartType } from "@/types/CartType";
 import useLocalStorageState from "use-local-storage-state";
 import { useState } from "react";
