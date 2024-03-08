@@ -1,14 +1,11 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faCartShopping,
-    // faLocationDot,
 } from "@fortawesome/free-solid-svg-icons";
 import { CartType } from "@/types/CartType";
 import useLocalStorageState from "use-local-storage-state";
 import { useState } from "react";
-// import { ItemType } from "@/types/ItemType";
 import PrimaryButton from "../PrimaryButton";
-// import Modal from "../Modal";
 import CheckoutModal from "./CheckoutModal";
 import { Currency } from "@/Common/Currency";
 

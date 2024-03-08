@@ -6,8 +6,8 @@ import CardItem from "@/Components/CardItem";
 import { ItemType } from "@/types/ItemType";
 import CheckoutButton from "@/Components/Checkout/CheckoutButton";
 
-export default function Dashboard({ auth }: PageProps) {
-    const [rowData, ] = useState<ItemType[]>([
+export default function CreateOrder({ auth }: PageProps) {
+    const [rowData] = useState<ItemType[]>([
         {
             id: 1,
             item_name: "Item 1",
@@ -55,11 +55,11 @@ export default function Dashboard({ auth }: PageProps) {
             user={auth.user}
             header={
                 <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    Dashboard
+                    Buat Pesanan
                 </h2>
             }
         >
-            <Head title="Dashboard" />
+            <Head title="Buat Pesanan" />
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">

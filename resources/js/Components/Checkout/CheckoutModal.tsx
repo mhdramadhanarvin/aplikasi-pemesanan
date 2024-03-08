@@ -57,7 +57,8 @@ const CheckoutModal = (
                 </div>
                 {products.map((data: ItemType, key: number) => (
                     <div
-                        className={`py-2 grid grid-flow-col  flex content-center ${key}`}
+                        className="py-2 grid grid-flow-col  flex content-center"
+                        key={key}
                     >
                         <div className="row-span-3">
                             <img
