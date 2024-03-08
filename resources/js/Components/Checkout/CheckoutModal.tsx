@@ -55,27 +55,31 @@ const CheckoutModal = (
                     </div>
                     <div className="pt-8 pl-5 text-lg">{Currency(15000)}</div>
                 </div>
-                {products.map((data: ItemType, key: number) => (
-                    <div
-                        className="py-2 grid grid-flow-col  flex content-center"
-                        key={key}
-                    >
-                        <div className="row-span-3">
-                            <img
-                                className="w-16 rounded-xl"
-                                src={data.thumbnail}
-                                alt="Sunset in the mountains"
-                            />
+                <div className="">
+                    {products.map((data: ItemType, key: number) => (
+                        <div
+                            className="py-2 grid grid-cols-4"
+                            key={key}
+                        >
+                            <div className="row-span-3">
+                                <img
+                                    className="w-16 h-16 rounded-xl"
+                                    src={data.thumbnail}
+                                    alt="Sunset in the mountains"
+                                />
+                            </div>
+                            <div className="col-span-2 text-lg">
+                                {data.item_name}
+                            </div>
+                            <div className="col-span-2 text-lg">
+                                {Currency(data.price)}
+                            </div>
+                            <div className="row-span-2">
+                                X {data.quantity}
+                            </div>
                         </div>
-                        <div className="col-span-2 text-lg">{data.item_name}</div>
-                        <div className="col-span-2 text-lg">
-                            {Currency(data.price)}
-                        </div>
-                        <div className="row-span-2">
-                            X {data.quantity}
-                        </div>
-                    </div>
-                ))}
+                    ))}
+                </div>
                 <div className="pt-1">
                     <h3 className="text-lg font-bold pb-1">
                         Ringkasan Pembayaran

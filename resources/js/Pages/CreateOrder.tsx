@@ -6,50 +6,7 @@ import CardItem from "@/Components/CardItem";
 import { ItemType } from "@/types/ItemType";
 import CheckoutButton from "@/Components/Checkout/CheckoutButton";
 
-export default function CreateOrder({ auth }: PageProps) {
-    const [rowData] = useState<ItemType[]>([
-        {
-            id: 1,
-            item_name: "Item 1",
-            thumbnail:
-                "https://i0.wp.com/resepkoki.id/wp-content/uploads/2020/10/Resep-Bakso-Bakar-Pedas-Manis-1.jpg?fit=438%2C496&ssl=1",
-            price: 10500,
-            quantity: 100,
-        },
-        {
-            id: 2,
-            item_name: "Item 2",
-            thumbnail:
-                "https://i0.wp.com/resepkoki.id/wp-content/uploads/2020/10/Resep-Bakso-Bakar-Pedas-Manis-1.jpg?fit=438%2C496&ssl=1",
-            price: 10500,
-            quantity: 100,
-        },
-        {
-            id: 3,
-            item_name: "Item 3",
-            thumbnail:
-                "https://i0.wp.com/resepkoki.id/wp-content/uploads/2020/10/Resep-Bakso-Bakar-Pedas-Manis-1.jpg?fit=438%2C496&ssl=1",
-            price: 10500,
-            quantity: 100,
-        },
-        {
-            id: 4,
-            item_name: "Item 4",
-            thumbnail:
-                "https://i0.wp.com/resepkoki.id/wp-content/uploads/2020/10/Resep-Bakso-Bakar-Pedas-Manis-1.jpg?fit=438%2C496&ssl=1",
-            price: 10500,
-            quantity: 100,
-        },
-        {
-            id: 5,
-            item_name: "Item 5",
-            thumbnail:
-                "https://i0.wp.com/resepkoki.id/wp-content/uploads/2020/10/Resep-Bakso-Bakar-Pedas-Manis-1.jpg?fit=438%2C496&ssl=1",
-            price: 10500,
-            quantity: 100,
-        },
-    ]);
-
+export default function CreateOrder({ auth, products }: PageProps) {
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -70,7 +27,7 @@ export default function CreateOrder({ auth }: PageProps) {
                             </h1>
                         </div>
                         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
-                            {rowData.map((data: ItemType, key: number) => (
+                            {products.map((data: ItemType, key: number) => (
                                 <CardItem key={key} item={data} />
                             ))}
                         </div>

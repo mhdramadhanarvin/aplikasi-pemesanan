@@ -35,6 +35,14 @@ export default function Authenticated(
                                     Buat Pesanan
                                 </NavLink>
                             </div>
+                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                                <NavLink
+                                    href={route("history.order")}
+                                    active={route().current("history.order")}
+                                >
+                                    Riwayat Pesanan
+                                </NavLink>
+                            </div>
                         </div>
 
                         <div className="hidden sm:flex sm:items-center sm:ms-6">

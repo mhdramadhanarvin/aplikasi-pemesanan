@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Models\Product;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -28,7 +29,7 @@ Route::get('/', function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/create-order', function () {
-        return Inertia::render('CreateOrder');
+        return Inertia::render('CreateOrder', ['products' => Product::all()]);
     })->name('create.order');
 
     Route::get('/history-order', function () {
