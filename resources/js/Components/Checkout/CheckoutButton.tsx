@@ -9,11 +9,11 @@ import { Currency } from "@/Common/Currency";
 import { DropPointType } from "@/types/DropPointType";
 
 interface CheckoutButtonProps {
-    show: boolean
-    dropPoint: DropPointType
+    show: boolean;
+    dropPoint: DropPointType;
 }
 
-const CheckoutButton = ({show, dropPoint}: CheckoutButtonProps) => {
+const CheckoutButton = ({ show, dropPoint }: CheckoutButtonProps) => {
     const [cart] = useLocalStorageState<CartType>("cart", {});
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
@@ -34,7 +34,6 @@ const CheckoutButton = ({show, dropPoint}: CheckoutButtonProps) => {
         <>
             <div
                 className={`sticky bottom-0 bg-white p-5 flex justify-center ${isCartEmpty} ${isHidden}`}
-
             >
                 <PrimaryButton
                     className="grid grid-rows-3 grid-flow-col rounded-xl"
@@ -51,13 +50,15 @@ const CheckoutButton = ({show, dropPoint}: CheckoutButtonProps) => {
                         {Currency(totalPrice)}
                     </div>
                 </PrimaryButton>
-                <CheckoutModal
-                    open={open}
-                    handleClose={handleClose}
-                    products={getProducts()}
-                    totalPrice={totalPrice}
-                    dropPoint={dropPoint}
-                />
+                {open && (
+                    <CheckoutModal
+                        open={open}
+                        handleClose={handleClose}
+                        products={getProducts()}
+                        totalPrice={totalPrice}
+                        dropPoint={dropPoint}
+                    />
+                )}
             </div>
         </>
     );

@@ -7,7 +7,6 @@ import { ItemType } from "@/types/ItemType";
 import { useEffect, useState } from "react";
 import { DropPointType } from "@/types/DropPointType";
 import { router } from "@inertiajs/react";
-import { type } from "os";
 
 interface CheckoutModalProps {
     open: boolean;
@@ -36,20 +35,14 @@ const CheckoutModal = (
         // open payment modal
         // TODO : this below just testing
         setPay(true);
+        setForm({
+            products,
+            dropPoint,
+            totalPrice: totalPrice + dropPoint.fee_shipping,
+        });
         setTimeout(() => {
             setPay(false);
-            // setData({
-            //     products,
-            //     dropPoint,
-            //     totalPricePost,
-            // });
-            // setForm("products", products);
-            console.log(JSON.stringify(products));
-            // setForm("dropPoint", dropPoint);
-            // setForm("totalPrice", totalPricePost);
-            // console.log(typeof(totalPricePost))
             router.post("/create-order", form);
-            // post(route("order.post", {products}))
         }, 2000);
     };
 

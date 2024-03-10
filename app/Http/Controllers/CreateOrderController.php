@@ -5,11 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
-use Error;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
-use PHPUnit\Metadata\Uses;
 
 class CreateOrderController extends Controller
 {
@@ -36,7 +34,6 @@ class CreateOrderController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
         DB::beginTransaction();
         try {
             $order = User::find(auth()->user()->id)->orders()->create([
