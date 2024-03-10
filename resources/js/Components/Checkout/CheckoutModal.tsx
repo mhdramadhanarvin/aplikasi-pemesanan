@@ -7,6 +7,8 @@ import { ItemType } from "@/types/ItemType";
 import { useEffect, useState } from "react";
 import { DropPointType } from "@/types/DropPointType";
 import { router } from "@inertiajs/react";
+import { CartType } from "@/types/CartType";
+import useLocalStorageState from "use-local-storage-state";
 
 interface CheckoutModalProps {
     open: boolean;
@@ -25,6 +27,7 @@ const CheckoutModal = (
         dropPoint: {},
         totalPrice: 0,
     });
+    const [cart, setCart] = useLocalStorageState<CartType>("cart", {});
     const submitOrder = () => {
         // set button disable
         // do something here
@@ -42,6 +45,8 @@ const CheckoutModal = (
         });
         setTimeout(() => {
             setPay(false);
+            setCart({});
+            handleClose(true)
             router.post("/create-order", form);
         }, 2000);
     };

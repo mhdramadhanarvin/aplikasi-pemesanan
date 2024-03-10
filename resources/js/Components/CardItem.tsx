@@ -17,11 +17,17 @@ const CardItem = ({ item }: Props) => {
     const safeCart = cart ?? {};
 
     const addToCart = (product: ItemType): void => {
-        product.quantity = 1;
+        // product.quantity = 1;
 
         setCart((prevCart) => ({
             ...prevCart,
-            [product.id]: product,
+            [product.id]: {
+                id: product.id,
+                item_name: product.item_name,
+                thumbnail: product.thumbnail,
+                price: product.price,
+                quantity: 1,
+            },
         }));
     };
 
@@ -81,11 +87,13 @@ const CardItem = ({ item }: Props) => {
                             id={item.id}
                             handleUpdateQuantity={handleUpdateQuantity}
                             initialQuantity={safeCart[item.id]?.quantity || 0}
+                            maxQuantity={item.quantity || 1}
                         />
                     )
                     : (
                         <PrimaryButton
                             className="w-full text-white justify-center border-2 border-blue-500 rounded-full text-2xl font-bold"
+                            disabled={item.quantity == 0}
                             onClick={() => {
                                 addToCart(item);
                             }}

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->integer('total_price');
+            $table->timestamp('payment_expired_at')->nullable();
             $table->timestamp('pay_at')->nullable();
             $table->string('proof_of_payment')->nullable();
             $table->enum('status', ['waiting_payment', 'on_progress', 'delivery', 'done'])->default('waiting_payment');

@@ -9,10 +9,17 @@ interface Props {
     handleUpdateQuantity: (id: number, operation: Operation) => void;
     id: number;
     initialQuantity: number;
+    maxQuantity: number;
 }
 
 export const Quantifier: FunctionComponent<Props> = (
-    { removeProductCallback, handleUpdateQuantity, id, initialQuantity },
+    {
+        removeProductCallback,
+        handleUpdateQuantity,
+        id,
+        initialQuantity,
+        maxQuantity,
+    },
 ) => {
     const [value, setValue] = useState<number>(initialQuantity);
 
@@ -29,8 +36,11 @@ export const Quantifier: FunctionComponent<Props> = (
     };
 
     const increase = (): void => {
-        handleUpdateQuantity(id, "increase");
-        setValue((prevState) => prevState + 1);
+        if (value < maxQuantity) {
+            handleUpdateQuantity(id, "increase");
+            setValue((prevState) => prevState + 1);
+        }
+        console.log(maxQuantity)
     };
 
     return (
@@ -54,6 +64,7 @@ export const Quantifier: FunctionComponent<Props> = (
                 value="+"
                 className="bg-gray-800 text-white rounded-full w-16"
                 onClick={increase}
+                // disabled={value >= maxQuantity}
             />
         </div>
     );

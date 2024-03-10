@@ -34,13 +34,18 @@ class CreateOrderController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         DB::beginTransaction();
         try {
             $order = User::find(auth()->user()->id)->orders()->create([
                 'total_price' => $request->totalPrice,
+                'payment_expired_at' => now()->addHour(),
             ]);
 
             foreach ($request->products as $product) {
+                $updateProduct = Product::find($product['id']);
+                $updateProduct->quantity -= $product['quantity'];
+                $updateProduct->save();
                 $order->item_order()->create([
                     'product_id' => $product['id'],
                     'quantity' => $product['quantity'],
@@ -58,6 +63,7 @@ class CreateOrderController extends Controller
                 'fee_shipping' => $request->dropPoint['fee_shipping'],
             ]);
             DB::commit();
+            return to_route('history.order');
         } catch (\Exception $e) {
             DB::rollBack();
             return $e->getMessage();
