@@ -21,9 +21,9 @@ export default function CreateOrder(
         name: "",
         phone_number: "",
         address: "",
-        origin: ["",""],
-        destination: ["",""],
-        fee_shipping: 0
+        origin: [0, 0],
+        destination: [0, 0],
+        fee_shipping: 0,
     });
 
     return (
@@ -37,7 +37,13 @@ export default function CreateOrder(
         >
             <Head title="Buat Pesanan" />
 
-            <DropPoint user={auth.user} step={step} setStep={setSteps} dropPoint={dropPoint} setDropPoint={setDropPoint} />
+            <DropPoint
+                user={auth.user}
+                step={step}
+                setStep={setSteps}
+                dropPoint={dropPoint}
+                setDropPoint={setDropPoint}
+            />
 
             <div className="py-12" hidden={step != 2}>
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">

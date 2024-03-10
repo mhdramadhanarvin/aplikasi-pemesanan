@@ -36,10 +36,11 @@ class CreateOrderController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         DB::beginTransaction();
         try {
             $order = User::find(auth()->user()->id)->orders()->create([
-                'total_price' => $request->totalPricePost,
+                'total_price' => $request->totalPrice,
             ]);
 
             foreach ($request->products as $product) {

@@ -4,9 +4,10 @@ import PrimaryButton from "../PrimaryButton";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { addAmount, Currency } from "@/Common/Currency";
 import { ItemType } from "@/types/ItemType";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DropPointType } from "@/types/DropPointType";
 import { router } from "@inertiajs/react";
+import { type } from "os";
 
 interface CheckoutModalProps {
     open: boolean;
@@ -20,6 +21,11 @@ const CheckoutModal = (
     { open, handleClose, products, totalPrice, dropPoint }: CheckoutModalProps,
 ) => {
     const [pay, setPay] = useState<boolean>(false);
+    const [form, setForm] = useState({
+        products: {},
+        dropPoint: {},
+        totalPrice: 0,
+    });
     const submitOrder = () => {
         // set button disable
         // do something here
@@ -32,15 +38,29 @@ const CheckoutModal = (
         setPay(true);
         setTimeout(() => {
             setPay(false);
-            let totalPricePost = addAmount(totalPrice, dropPoint.fee_shipping, false);
-            router.post("/create-order", {
-                products,
-                dropPoint,
-                totalPricePost,
-            });
-            alert("OK")
+            // setData({
+            //     products,
+            //     dropPoint,
+            //     totalPricePost,
+            // });
+            // setForm("products", products);
+            console.log(JSON.stringify(products));
+            // setForm("dropPoint", dropPoint);
+            // setForm("totalPrice", totalPricePost);
+            // console.log(typeof(totalPricePost))
+            router.post("/create-order", form);
+            // post(route("order.post", {products}))
         }, 2000);
     };
+
+    useEffect(() => {
+        setForm({
+            products,
+            dropPoint,
+            totalPrice: totalPrice + dropPoint.fee_shipping,
+        });
+    }, []);
+
     return (
         <Modal show={open} onClose={handleClose} maxWidth="lg">
             <div className="px-7 py-5">
@@ -136,7 +156,12 @@ const CheckoutModal = (
                     </div>
                 </div>
                 <div className="flex justify-center pt-5">
-                    <PrimaryButton disabled={pay} onClick={() => submitOrder()}>
+                    <PrimaryButton
+                        disabled={pay}
+                        onClick={() => {
+                            submitOrder();
+                        }}
+                    >
                         {pay
                             ? <span className="text-lg">Loading...</span>
                             : <span className="text-lg">Pesan Sekarang</span>}
