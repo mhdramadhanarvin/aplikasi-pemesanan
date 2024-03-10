@@ -29,6 +29,7 @@ Route::get('/', function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/create-order', [CreateOrderController::class, 'index'])->name('create.order');
+    Route::post('/create-order', [CreateOrderController::class, 'store'])->name('order.post');
 
     Route::get('/history-order', function () {
         return Inertia::render('HistoryOrder');

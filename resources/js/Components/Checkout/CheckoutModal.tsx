@@ -6,6 +6,7 @@ import { addAmount, Currency } from "@/Common/Currency";
 import { ItemType } from "@/types/ItemType";
 import { useState } from "react";
 import { DropPointType } from "@/types/DropPointType";
+import { router } from "@inertiajs/react";
 
 interface CheckoutModalProps {
     open: boolean;
@@ -31,6 +32,13 @@ const CheckoutModal = (
         setPay(true);
         setTimeout(() => {
             setPay(false);
+            let totalPricePost = addAmount(totalPrice, dropPoint.fee_shipping, false);
+            router.post("/create-order", {
+                products,
+                dropPoint,
+                totalPricePost,
+            });
+            alert("OK")
         }, 2000);
     };
     return (
@@ -57,9 +65,11 @@ const CheckoutModal = (
                         </div>
                     </div>
                     <div className="pt-8 pl-5 text-lg">
-                        {dropPoint.fee_shipping == 0 ? <span className="font-bold">FREE</span> : (
-                            Currency(dropPoint.fee_shipping)
-                        )}
+                        {dropPoint.fee_shipping == 0
+                            ? <span className="font-bold">FREE</span>
+                            : (
+                                Currency(dropPoint.fee_shipping)
+                            )}
                     </div>
                 </div>
                 <div className="">
@@ -107,9 +117,11 @@ const CheckoutModal = (
                             </div>
                         </div>
                         <div className="text-lg">
-                            {dropPoint.fee_shipping == 0 ? <span className="font-bold">FREE</span> : (
-                                Currency(dropPoint.fee_shipping)
-                            )}
+                            {dropPoint.fee_shipping == 0
+                                ? <span className="font-bold">FREE</span>
+                                : (
+                                    Currency(dropPoint.fee_shipping)
+                                )}
                         </div>
                     </div>
                     <div className="grid grid-cols-6 text-lg font-bold">

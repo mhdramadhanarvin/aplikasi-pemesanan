@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use App\Models\Product;
+use App\Models\User;
+use Error;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
+use PHPUnit\Metadata\Uses;
 
 class CreateOrderController extends Controller
 {
@@ -31,7 +36,34 @@ class CreateOrderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $order = User::find(auth()->user()->id)->orders()->create([
+                'total_price' => $request->totalPricePost,
+            ]);
+
+            foreach ($request->products as $product) {
+                $order->item_order()->create([
+                    'product_id' => $product['id'],
+                    'quantity' => $product['quantity'],
+                    'price' => $product['price'],
+                    'total_price' => $product['price'] * $product['quantity']
+                ]);
+            }
+
+            $order->address_order()->create([
+                'name' => $request->dropPoint['name'],
+                'phone_number' => $request->dropPoint['phone_number'],
+                'address' => $request->dropPoint['address'],
+                'origin' => json_encode($request->dropPoint['origin'][0], $request->dropPoint['origin'][1]),
+                'destination' => json_encode($request->dropPoint['destination'][0], $request->dropPoint['destination'][1]),
+                'fee_shipping' => $request->dropPoint['fee_shipping'],
+            ]);
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return $e->getMessage();
+        }
     }
 
     /**
