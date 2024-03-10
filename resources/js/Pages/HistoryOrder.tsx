@@ -78,7 +78,6 @@ export default function HistoryOrder({ auth }: PageProps) {
                 </div>
             </div>
 
-            <CheckoutButton />
         </AuthenticatedLayout>
     );
 }

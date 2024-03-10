@@ -5,16 +5,18 @@ import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { addAmount, Currency } from "@/Common/Currency";
 import { ItemType } from "@/types/ItemType";
 import { useState } from "react";
+import { DropPointType } from "@/types/DropPointType";
 
 interface CheckoutModalProps {
     open: boolean;
     handleClose: (close: boolean) => void;
     products: ItemType[];
     totalPrice: number;
+    dropPoint: DropPointType;
 }
 
 const CheckoutModal = (
-    { open, handleClose, products, totalPrice }: CheckoutModalProps,
+    { open, handleClose, products, totalPrice, dropPoint }: CheckoutModalProps,
 ) => {
     const [pay, setPay] = useState<boolean>(false);
     const submitOrder = () => {
@@ -39,21 +41,26 @@ const CheckoutModal = (
                         Ringkasan Pesanan
                     </h2>
                 </div>
-                <div className="grid grid-cols-6">
-                    <div className="col-span-4">
+                <div className="grid grid-cols-7">
+                    <div className="col-span-5">
                         <div className="py-2">
                             <h3 className="text-lg font-bold text-gray-900">
                                 Alamat Pengantaran
                             </h3>
                             <p className="text-md">
+                                <span className="block">
+                                    {dropPoint.name} ({dropPoint.phone_number})
+                                </span>
                                 <FontAwesomeIcon icon={faLocationDot} className="mr-2" />
-                                {/* TODO : get destination from location marker */}
-                                JL. AR HAKIM JL. AR HAKIM JL. AR HAKIM JL. AR HAKIM JL. AR HAKIM
-                                JL. AR HAKIM JL. AR HAKIM JL. AR HAKIM
+                                {dropPoint.address}
                             </p>
                         </div>
                     </div>
-                    <div className="pt-8 pl-5 text-lg">{Currency(15000)}</div>
+                    <div className="pt-8 pl-5 text-lg">
+                        {dropPoint.fee_shipping == 0 ? <span className="font-bold">FREE</span> : (
+                            Currency(dropPoint.fee_shipping)
+                        )}
+                    </div>
                 </div>
                 <div className="">
                     {products.map((data: ItemType, key: number) => (
@@ -100,8 +107,9 @@ const CheckoutModal = (
                             </div>
                         </div>
                         <div className="text-lg">
-                            {/* TODO : calculate from distance resto to destination */}
-                            {Currency(15000)}
+                            {dropPoint.fee_shipping == 0 ? <span className="font-bold">FREE</span> : (
+                                Currency(dropPoint.fee_shipping)
+                            )}
                         </div>
                     </div>
                     <div className="grid grid-cols-6 text-lg font-bold">
@@ -111,8 +119,7 @@ const CheckoutModal = (
                             </div>
                         </div>
                         <div className="">
-                            {/* TODO : add amount from distance resto to destination */}
-                            {addAmount(totalPrice, 15000, true)}
+                            {addAmount(totalPrice, dropPoint.fee_shipping, true)}
                         </div>
                     </div>
                 </div>

@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Inertia\Inertia;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -11,7 +12,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
     }
 
     /**
@@ -20,7 +20,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         // if ($this->app->environment('production')) {
-            // \URL::forceScheme('https');
+        // \URL::forceScheme('https');
         // }
     }
 }
