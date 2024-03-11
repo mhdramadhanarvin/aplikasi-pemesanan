@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\CreateOrderController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -28,12 +28,10 @@ Route::get('/', function () {
 
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/create-order', [CreateOrderController::class, 'index'])->name('create.order');
-    Route::post('/create-order', [CreateOrderController::class, 'store'])->name('order.post');
+    Route::get('/create-order', [OrderController::class, 'create'])->name('order.create');
+    Route::post('/create-order', [OrderController::class, 'store'])->name('order.post');
 
-    Route::get('/history-order', function () {
-        return Inertia::render('HistoryOrder');
-    })->name('history.order');
+    Route::get('/history-order', [OrderController::class, 'index'])->name('history.order');
 });
 
 Route::middleware('auth')->group(function () {

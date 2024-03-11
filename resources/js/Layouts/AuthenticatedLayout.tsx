@@ -29,8 +29,8 @@ export default function Authenticated(
 
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <NavLink
-                                    href={route("create.order")}
-                                    active={route().current("create.order")}
+                                    href={route("order.create")}
+                                    active={route().current("order.create")}
                                 >
                                     Buat Pesanan
                                 </NavLink>
@@ -132,8 +132,8 @@ export default function Authenticated(
                 >
                     <div className="pt-2 pb-3 space-y-1">
                         <ResponsiveNavLink
-                            href={route("create.order")}
-                            active={route().current("create.order")}
+                            href={route("order.create")}
+                            active={route().current("order.create")}
                         >
                             Buat Pesanan
                         </ResponsiveNavLink>
