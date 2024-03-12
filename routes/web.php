@@ -31,7 +31,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/create-order', [OrderController::class, 'create'])->name('order.create');
     Route::post('/create-order', [OrderController::class, 'store'])->name('order.post');
 
-    Route::get('/history-order', [OrderController::class, 'index'])->name('history.order');
+    Route::get('/history-order/{id?}', [OrderController::class, 'index'])->name('history.order');
     Route::post('/payment-order/{order}', [OrderController::class, 'payment'])->name('order.payment');
 });
 

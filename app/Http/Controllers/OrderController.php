@@ -17,15 +17,20 @@ class OrderController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($id = null)
     {
+        $payOrder = null;
+        if ($id) {
+            $payOrder = Order::withCount('item_orders')->with('item_orders','address_order')->where('user_id', auth()->user()->id)->where('status', 'waiting_payment')->find($id);
+        }
         $orders = Order::withCount('item_orders')->with('item_orders', 'address_order')->where('user_id', auth()->user()->id)->latest()->get();
         $orders->map(function ($order) {
             $order->format_created_at = Carbon::parse($order->created_at)->format('Y-m-d H:i');
             return $order;
         });
         return Inertia::render('HistoryOrder', [
-            'orders' => $orders
+            'orders' => $orders,
+            'payOrder' => $payOrder
         ]);
     }
 
@@ -44,7 +49,6 @@ class OrderController extends Controller
      */
     public function store(StoreOrderRequest $request)
     {
-        // dd($request->all());
         DB::beginTransaction();
         try {
             $order = User::find(auth()->user()->id)->orders()->create([
@@ -73,7 +77,7 @@ class OrderController extends Controller
                 'fee_shipping' => $request->dropPoint['fee_shipping'],
             ]);
             DB::commit();
-            return to_route('history.order');
+            return to_route('history.order', $order->id);
         } catch (\Exception $e) {
             DB::rollBack();
             return $e->getMessage();
@@ -83,16 +87,16 @@ class OrderController extends Controller
 
     public function payment(PaymentOrderRequest $request, Order $order)
     {
+
         DB::beginTransaction();
         try {
-            if ($order->status == 'waiting_payment') {
-                $path = $request->file('proof_of_payment')->store('proof_of_payment');
-                $order->proof_of_payment = $path;
-                $order->pay_at = now();
-                $order->status = 'on_progress';
-                $order->save();
-                DB::commit();
-            }
+            $path = $request->file('proof_of_payment')->store('proof_of_payment');
+            $order->proof_of_payment = $path;
+            $order->pay_at = now();
+            $order->status = 'on_progress';
+            $order->save();
+            DB::commit();
+            return to_route('history.order');
         } catch (\Exception $e) {
             DB::rollBack();
             return $e->getMessage();

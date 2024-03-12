@@ -40,7 +40,9 @@ export const PaymentModal = (
     };
 
     const handleSubmit = () => {
-        post(route("order.payment", order.id)); // Directly pass FormData object
+        post(route("order.payment", order.id), {
+            onSuccess: () => handleCloseModal(),
+        }); // Directly pass FormData object
     };
 
     const Completionist = () => <span>Pembayaran Sudah Kadaluarsa!</span>;
@@ -52,8 +54,9 @@ export const PaymentModal = (
             return <span>{hours}:{minutes}:{seconds}</span>;
         }
     };
+
     return (
-        <Modal show={open} onClose={()=>{}} maxWidth="lg">
+        <Modal show={open} onClose={() => { }} maxWidth="lg">
             <div className="px-7 py-5">
                 <div className="pb-2">
                     <h2 className="text-2xl font-bold text-gray-900">

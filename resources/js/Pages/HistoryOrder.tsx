@@ -7,18 +7,23 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDollarSign, faEye } from "@fortawesome/free-solid-svg-icons";
 import { PaymentModal } from "@/Components/Payment/PaymentModal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function HistoryOrder(
-    { auth, orders }: PageProps<{ orders: OrderType[] }>,
+    { auth, orders, payOrder }: PageProps<
+        { orders: OrderType[]; payOrder: OrderType | null }
+    >,
 ) {
-    const [pay, setPay] = useState(false);
-    const [detailOrder, setDetailOrder] = useState<OrderType>();
-    const handleOpen = (order: OrderType) => {
+    const [detailOrder, setDetailOrder] = useState<OrderType>(null);
+    const [action, setAction] = useState<string>(null);
+    const payOpen = (order: OrderType) => {
         setDetailOrder(order);
-        setPay(true);
+        setAction("pay");
     };
-    const handleClose = () => setPay(false);
+    const handleClose = () => {
+        setDetailOrder(null);
+        setAction(null);
+    };
 
     const getStatusLabelAndColor = (status: OrderStatus) => {
         switch (status) {
@@ -59,6 +64,10 @@ export default function HistoryOrder(
                 };
         }
     };
+
+    useEffect(() => {
+        if (payOrder) payOpen(payOrder);
+    }, [payOrder]);
 
     return (
         <AuthenticatedLayout
@@ -117,7 +126,7 @@ export default function HistoryOrder(
                                             <td className="whitespace-nowrap px-4 py-2">
                                                 {order.status == OrderStatus.WAITING_PAYMENT && (
                                                     <>
-                                                        <PrimaryButton onClick={() => handleOpen(order)}>
+                                                        <PrimaryButton onClick={() => payOpen(order)}>
                                                             <FontAwesomeIcon
                                                                 icon={faDollarSign}
                                                                 className="mx-2"
@@ -125,9 +134,9 @@ export default function HistoryOrder(
                                                             Bayar Sekarang
                                                         </PrimaryButton>
 
-                                                        {detailOrder && (
+                                                        {action == "pay" && (
                                                             <PaymentModal
-                                                                open={pay}
+                                                                open={action == "pay"}
                                                                 handleClose={handleClose}
                                                                 order={detailOrder}
                                                                 totalPrice={detailOrder.total_price}
