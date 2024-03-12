@@ -32,6 +32,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/create-order', [OrderController::class, 'store'])->name('order.post');
 
     Route::get('/history-order', [OrderController::class, 'index'])->name('history.order');
+    Route::post('/payment-order/{order}', [OrderController::class, 'payment'])->name('order.payment');
 });
 
 Route::middleware('auth')->group(function () {

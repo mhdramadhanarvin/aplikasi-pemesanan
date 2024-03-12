@@ -19,7 +19,7 @@ return new class extends Migration
             $table->timestamp('payment_expired_at')->nullable();
             $table->timestamp('pay_at')->nullable();
             $table->string('proof_of_payment')->nullable();
-            $table->enum('status', ['waiting_payment', 'on_progress', 'delivery', 'done', 'canceled'])->default('waiting_payment');
+            $table->enum('status', ['waiting_payment', 'on_progress', 'delivery', 'done', 'canceled', 'expired'])->default('waiting_payment');
             $table->timestamps();
         });
     }
