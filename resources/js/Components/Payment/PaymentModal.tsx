@@ -1,12 +1,12 @@
 import { Currency } from "@/Common/Currency";
 import Modal from "@/Components/Modal";
 import PrimaryButton from "@/Components/PrimaryButton";
-import Countdown from "react-countdown";
 import { OrderType } from "@/types/OrderType";
 import TextInput from "@/Components/TextInput";
 import { useForm } from "@inertiajs/react";
 import InputError from "@/Components/InputError";
 import SecondaryButton from "@/Components/SecondaryButton";
+import CountdownTimer from "../Countdown/Countdown";
 
 interface PaymentModalProps {
     open: boolean;
@@ -83,9 +83,9 @@ export const PaymentModal = (
                         </p>
 
                         <div className="text-center w-full text-3xl p-3">
-                            <Countdown
-                                date={order.payment_expired_at}
-                                renderer={renderer}
+                            <CountdownTimer
+                                targetDate={order.payment_expired_at}
+                                expiredText="Pembayaran Kadaluarsa"
                             />
                         </div>
                     </div>

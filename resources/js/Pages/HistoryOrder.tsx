@@ -14,15 +14,14 @@ export default function HistoryOrder(
         { orders: OrderType[]; payOrder: OrderType | null }
     >,
 ) {
-    const [detailOrder, setDetailOrder] = useState<OrderType>(null);
-    const [action, setAction] = useState<string>(null);
+    const [detailOrder, setDetailOrder] = useState<OrderType>();
+    const [action, setAction] = useState<string>();
     const payOpen = (order: OrderType) => {
         setDetailOrder(order);
         setAction("pay");
     };
     const handleClose = () => {
-        setDetailOrder(null);
-        setAction(null);
+        setAction("");
     };
 
     const getStatusLabelAndColor = (status: OrderStatus) => {
@@ -134,7 +133,7 @@ export default function HistoryOrder(
                                                             Bayar Sekarang
                                                         </PrimaryButton>
 
-                                                        {action == "pay" && (
+                                                        {action == "pay" && detailOrder && (
                                                             <PaymentModal
                                                                 open={action == "pay"}
                                                                 handleClose={handleClose}
