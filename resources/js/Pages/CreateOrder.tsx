@@ -8,10 +8,6 @@ import CheckoutButton from "@/Components/Checkout/CheckoutButton";
 import "../../css/create-order.scss";
 import { DropPoint } from "@/Components/DropPoint/DropPoint";
 import { DropPointType } from "@/types/DropPointType";
-// import InputLabel from "@/Components/InputLabel";
-// import PrimaryButton from "@/Components/PrimaryButton";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faEdit } from "@fortawesome/free-solid-svg-icons";
 
 export default function CreateOrder(
     { auth, products }: PageProps<{ products: ItemType[] }>,

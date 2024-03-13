@@ -1,13 +1,17 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import { PageProps } from "@/types";
-import { OrderStatus, OrderType } from "@/types/OrderType";
+import {
+    OrderStatus,
+    OrderType,
+} from "@/types/OrderType";
 import { Currency } from "@/Common/Currency";
 import PrimaryButton from "@/Components/PrimaryButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDollarSign, faEye } from "@fortawesome/free-solid-svg-icons";
-import { PaymentModal } from "@/Components/Payment/PaymentModal";
+import { PaymentModal } from "@/Components/HistoryOrder/PaymentModal";
 import { useEffect, useState } from "react";
+import { DetailModal } from "@/Components/HistoryOrder/DetailModal";
 
 export default function HistoryOrder(
     { auth, orders, payOrder }: PageProps<
@@ -16,9 +20,9 @@ export default function HistoryOrder(
 ) {
     const [detailOrder, setDetailOrder] = useState<OrderType>();
     const [action, setAction] = useState<string>();
-    const payOpen = (order: OrderType) => {
+    const actionOpen = (order: OrderType, action: string) => {
         setDetailOrder(order);
-        setAction("pay");
+        setAction(action);
     };
     const handleClose = () => {
         setAction("");
@@ -65,7 +69,10 @@ export default function HistoryOrder(
     };
 
     useEffect(() => {
-        if (payOrder) payOpen(payOrder);
+        if (payOrder) {
+            setAction("pay");
+            setDetailOrder(payOrder);
+        }
     }, [payOrder]);
 
     return (
@@ -125,12 +132,14 @@ export default function HistoryOrder(
                                             <td className="whitespace-nowrap px-4 py-2">
                                                 {order.status == OrderStatus.WAITING_PAYMENT && (
                                                     <>
-                                                        <PrimaryButton onClick={() => payOpen(order)}>
+                                                        <PrimaryButton
+                                                            onClick={() => actionOpen(order, "pay")}
+                                                        >
                                                             <FontAwesomeIcon
                                                                 icon={faDollarSign}
                                                                 className="mx-2"
                                                             />
-                                                            Bayar Sekarang
+                                                            Bayar
                                                         </PrimaryButton>
 
                                                         {action == "pay" && detailOrder && (
@@ -143,13 +152,23 @@ export default function HistoryOrder(
                                                         )}
                                                     </>
                                                 )}
-                                                <PrimaryButton className="mx-1">
+                                                <PrimaryButton
+                                                    className="mx-1"
+                                                    onClick={() => actionOpen(order, "detail")}
+                                                >
                                                     <FontAwesomeIcon
                                                         icon={faEye}
                                                         className="mx-2"
                                                     />
-                                                    Lihat Detail
+                                                    Detail
                                                 </PrimaryButton>
+                                                {action == "detail" && detailOrder && (
+                                                    <DetailModal
+                                                        open={action == "detail"}
+                                                        handleClose={handleClose}
+                                                        order={detailOrder}
+                                                    />
+                                                )}
                                             </td>
                                         </tr>
                                     ))}

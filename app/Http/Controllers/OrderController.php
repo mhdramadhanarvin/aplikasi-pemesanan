@@ -21,12 +21,13 @@ class OrderController extends Controller
     {
         $payOrder = null;
         if ($id) {
-            $payOrder = Order::withCount('item_orders')->with('item_orders','address_order')->where('user_id', auth()->user()->id)->where('status', 'waiting_payment')->find($id);
+            $payOrder = Order::withCount('item_orders')->with('item_orders', 'address_order')->where('user_id', auth()->user()->id)->where('status', 'waiting_payment')->find($id);
         }
-        $orders = Order::withCount('item_orders')->with('item_orders', 'address_order')->where('user_id', auth()->user()->id)->latest()->get();
+        $orders = Order::withCount('item_orders')->with('item_orders', 'address_order', 'item_orders.product')->where('user_id', auth()->user()->id)->latest()->get();
         $orders->map(function ($order) {
             $order->format_created_at = Carbon::parse($order->created_at)->format('Y-m-d H:i');
-            return $order;
+            $order->address_order->origin = json_decode($order->address_order->origin);
+            $order->address_order->destination = json_decode($order->address_order->destination);
         });
         return Inertia::render('HistoryOrder', [
             'orders' => $orders,
@@ -72,8 +73,8 @@ class OrderController extends Controller
                 'name' => $request->dropPoint['name'],
                 'phone_number' => $request->dropPoint['phone_number'],
                 'address' => $request->dropPoint['address'],
-                'origin' => json_encode($request->dropPoint['origin'][0], $request->dropPoint['origin'][1]),
-                'destination' => json_encode($request->dropPoint['destination'][0], $request->dropPoint['destination'][1]),
+                'origin' => json_encode($request->dropPoint['origin']),
+                'destination' => json_encode($request->dropPoint['destination']),
                 'fee_shipping' => $request->dropPoint['fee_shipping'],
             ]);
             DB::commit();

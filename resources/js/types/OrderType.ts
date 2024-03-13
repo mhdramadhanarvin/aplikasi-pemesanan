@@ -33,5 +33,6 @@ export interface OrderType {
     format_created_at: string;
     item_orders_count: number;
     item_orders: ItemOrder[];
-    address_order: AddressOrder[];
+    address_order: AddressOrder;
 }
+

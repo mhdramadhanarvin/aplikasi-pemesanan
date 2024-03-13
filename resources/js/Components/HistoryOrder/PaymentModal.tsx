@@ -7,7 +7,6 @@ import { useForm } from "@inertiajs/react";
 import InputError from "@/Components/InputError";
 import SecondaryButton from "@/Components/SecondaryButton";
 import CountdownTimer from "../Countdown/Countdown";
-import { useState } from "react";
 
 interface PaymentModalProps {
     open: boolean;
@@ -28,7 +27,6 @@ export const PaymentModal = (
     >({
         proof_of_payment: null,
     });
-    const [paymentExpired, setPaymentExpired] = useState<boolean>(false);
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files && e.target.files[0];
