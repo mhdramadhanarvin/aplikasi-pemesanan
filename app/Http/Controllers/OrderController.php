@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use App\Http\Requests\PaymentOrderRequest;
+use App\Jobs\SendPaymentConfirmation;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
@@ -91,12 +92,14 @@ class OrderController extends Controller
 
         DB::beginTransaction();
         try {
-            $path = $request->file('proof_of_payment')->store('proof_of_payment');
+            $file = $request->file('proof_of_payment');
+            $path = $file->storeAs('public/proof_of_payment', md5(uniqid(rand(), true)) . "." . $file->getClientOriginalExtension());
             $order->proof_of_payment = $path;
             $order->pay_at = now();
             $order->status = 'on_progress';
             $order->save();
             DB::commit();
+            SendPaymentConfirmation::dispatch($order);
             return to_route('history.order');
         } catch (\Exception $e) {
             DB::rollBack();

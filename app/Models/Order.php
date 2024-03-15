@@ -28,4 +28,9 @@ class Order extends Model
     {
         return $this->hasMany(ItemOrder::class);
     }
+
+    public function whatsapp_api_logs(): HasMany
+    {
+        return $this->hasMany(WhatsappApiLog::class);
+    }
 }

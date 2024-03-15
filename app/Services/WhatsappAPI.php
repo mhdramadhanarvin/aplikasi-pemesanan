@@ -12,6 +12,7 @@ class WhatsappAPI
     protected $token;
     protected $baseUrl;
     protected $to;
+    protected $templateComponent;
 
     public function __construct()
     {
@@ -35,22 +36,66 @@ class WhatsappAPI
         $this->template_name = $templateName;
     }
 
-    public function sendMessage()
+    public function setTemplateComponent($headerImage, $name, $phoneNumber, $address, $totalItem, $totalPrice)
     {
-        $this->baseUrl .= "/messages";
-        $request = Http::withHeaders([
-            'Authorization' => 'Bearer ' . $this->token
-        ])->post($this->baseUrl, [
+        $this->templateComponent = [
             "messaging_product" => "whatsapp",
+            "recipient_type" => "individual",
             "to" => $this->to,
             "type" => "template",
             "template" => [
                 "name" => $this->template_name,
                 "language" => [
-                    "code" => "en_US",
+                    "code" => "id"
                 ],
+                "components" => [
+                    [
+                        "type" => "header",
+                        "parameters" => [
+                            [
+                                "type" => "image",
+                                "image" => [
+                                    "link" => $headerImage
+                                ]
+                            ]
+                        ]
+                    ],
+                    [
+                        "type" => "body",
+                        "parameters" => [
+                            [
+                                "type" => "text",
+                                "text" => $name
+                            ],
+                            [
+                                "type" => "text",
+                                "text" => $phoneNumber
+                            ],
+                            [
+                                "type" => "text",
+                                "text" => $address
+                            ],
+                            [
+                                "type" => "text",
+                                "text" => $totalItem
+                            ],
+                            [
+                                "type" => "text",
+                                "text" => $totalPrice
+                            ]
+                        ]
+                    ]
+                ]
             ]
-        ]);
+        ];
+    }
+
+    public function sendMessage()
+    {
+        $this->baseUrl .= "/messages";
+        $request = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $this->token
+        ])->post($this->baseUrl, $this->templateComponent);
 
         return $request->json();
     }
