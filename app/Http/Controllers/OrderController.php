@@ -11,6 +11,7 @@ use App\Models\Product;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
 class OrderController extends Controller
@@ -96,13 +97,14 @@ class OrderController extends Controller
             $path = $file->storeAs('public/proof_of_payment', md5(uniqid(rand(), true)) . "." . $file->getClientOriginalExtension());
             $order->proof_of_payment = $path;
             $order->pay_at = now();
-            $order->status = 'on_progress';
+            $order->status = 'waiting_confirmation_payment';
             $order->save();
-            DB::commit();
             SendPaymentConfirmation::dispatch($order);
+            DB::commit();
             return to_route('history.order');
         } catch (\Exception $e) {
             DB::rollBack();
+            Log::error("OrderController: ".$e->getMessage());
             return $e->getMessage();
         }
     }

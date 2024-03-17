@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class WhatsappAPI
 {
@@ -13,10 +15,12 @@ class WhatsappAPI
     protected $baseUrl;
     protected $to;
     protected $templateComponent;
+    protected $appID = 385516887524806;
+    protected $sessionID;
 
     public function __construct()
     {
-        $this->baseUrl = "https://graph.facebook.com/" . $this->version . "/" . $this->phone_number_id;
+        $this->baseUrl = "https://graph.facebook.com/" . $this->version . "/";
         $this->template_name = "hello-world";
         $this->token = env('META_GRAPH_API_ACCESS_TOKEN');
     }
@@ -92,11 +96,47 @@ class WhatsappAPI
 
     public function sendMessage()
     {
-        $this->baseUrl .= "/messages";
-        $request = Http::withHeaders([
-            'Authorization' => 'Bearer ' . $this->token
-        ])->post($this->baseUrl, $this->templateComponent);
+        try {
+            $this->baseUrl .= $this->phone_number_id . "/messages";
+            $request = Http::withHeaders([
+                'Authorization' => 'Bearer ' . $this->token
+            ])->post($this->baseUrl, $this->templateComponent);
 
-        return $request->json();
+            $response = $request->json();
+
+            return $response;
+        } catch (\Throwable $e) {
+            Log::error("WhatsappAPI: " . $e->getMessage());
+        }
+    }
+
+    public function createSessionUpload($fileSize, $fileType)
+    {
+        $baseUrl = $this->baseUrl . $this->appID . "/uploads";
+        $request = Http::withQueryParameters([
+            'file_length' => $fileSize,
+            'file_type' => $fileType,
+            'access_token' => $this->token
+        ])->post($baseUrl);
+
+        $this->sessionID = $request->json()['id'];
+    }
+
+    public function uploadImage($pathFile)
+    {
+        $this->baseUrl .= $this->sessionID;
+        // $clearPath = Str::remove('public/', $pathFile);
+        $clearPath = Str::remove('public/', asset('storage/' . $pathFile));
+        // $photo = fopen($clearPath, 'r');
+        $request = Http::withHeaders([
+            'Authorization' => 'OAuth ' . $this->token,
+            'file_offset' => 0
+        ])->attach(
+            'data-binary',
+            file_get_contents($clearPath),
+            basename($clearPath)
+        )->post($this->baseUrl);
+
+        return [$request->status(), $request->json()];
     }
 }

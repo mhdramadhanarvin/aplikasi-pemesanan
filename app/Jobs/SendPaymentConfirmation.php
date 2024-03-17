@@ -44,7 +44,7 @@ class SendPaymentConfirmation implements ShouldQueue
             ]);
             DB::commit();
         } catch (\Exception $e) {
-            Log::error("SendPaymentConfirmation Error :" . $e->getMessage());
+            Log::error("SendPaymentConfirmation :" . $e->getMessage());
         }
     }
 }

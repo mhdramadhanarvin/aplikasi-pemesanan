@@ -3,6 +3,7 @@ import { ItemType } from "./ItemType";
 
 export enum OrderStatus {
     WAITING_PAYMENT = "waiting_payment",
+    WAITING_CONFIRMATION_PAYMENT = "waiting_confirmation_payment",
     ON_PROGRESS = "on_progress",
     DELIVERY = "delivery",
     DONE = "done",

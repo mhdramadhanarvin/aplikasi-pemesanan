@@ -35,6 +35,11 @@ export default function HistoryOrder(
                     label: "Menunggu Pembayaran",
                     color: "bg-yellow-50 text-yellow-800 ring-yellow-600/20",
                 };
+            case OrderStatus.WAITING_CONFIRMATION_PAYMENT:
+                return {
+                    label: "Menunggu Konfirmasi Pembayaran",
+                    color: "bg-yellow-50 text-yellow-800 ring-yellow-600/20",
+                };
             case OrderStatus.ON_PROGRESS:
                 return {
                     label: "Sedang Diproses",

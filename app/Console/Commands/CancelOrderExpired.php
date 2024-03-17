@@ -42,8 +42,8 @@ class CancelOrderExpired extends Command
             DB::commit();
             $this->info("DONE");
         } catch (\Exception $e) {
-            $this->error($e->getMessage());
             DB::rollback();
+            $this->error($e->getMessage());
             sleep(5);
         }
     }
