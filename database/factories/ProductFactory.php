@@ -18,7 +18,7 @@ class ProductFactory extends Factory
     {
         return [
             'item_name' => fake()->name(),
-            'thumbnail' => fake()->imageUrl(),
+            'thumbnail' => fake()->image('storage/app/public', 640, 480, null, false),
             'price' => fake()->randomNumber(5, true),
             'quantity' => fake()->randomDigitNot(0)
         ];

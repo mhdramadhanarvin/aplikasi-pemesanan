@@ -44,7 +44,6 @@ class CancelOrderExpired extends Command
         } catch (\Exception $e) {
             DB::rollback();
             $this->error($e->getMessage());
-            sleep(5);
         }
     }
 }

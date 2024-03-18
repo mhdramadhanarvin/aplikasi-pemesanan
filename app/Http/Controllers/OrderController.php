@@ -42,8 +42,12 @@ class OrderController extends Controller
      */
     public function create()
     {
+        $products= Product::all();
+        $products->map(function ($product) {
+            $product->thumbnail = asset('storage/' . $product->thumbnail);
+        });
         return Inertia::render('CreateOrder', [
-            'products' => Product::all(),
+            'products' => $products,
         ]);
     }
 
