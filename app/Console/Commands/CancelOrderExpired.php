@@ -37,6 +37,11 @@ class CancelOrderExpired extends Command
             foreach ($orders as $order) {
                 $order->status = "expired";
                 $order->save();
+                foreach ($order->item_orders as $item_order) {
+                    $item_order->product->quantity += $item_order->quantity;
+                    $item_order->product->save();
+                    $this->info("Re-stock quantity product " . $item_order->product->id);
+                }
                 $this->info("Canceled order ID : " . $order->id);
             }
             DB::commit();
