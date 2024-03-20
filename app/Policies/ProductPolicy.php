@@ -53,7 +53,7 @@ class ProductPolicy
      */
     public function restore(User $user, Product $product): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -61,6 +61,6 @@ class ProductPolicy
      */
     public function forceDelete(User $user, Product $product): bool
     {
-        return true;
+        return false;
     }
 }

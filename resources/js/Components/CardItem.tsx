@@ -98,8 +98,18 @@ const CardItem = ({ item }: Props) => {
                                 addToCart(item);
                             }}
                         >
-                            <FontAwesomeIcon icon={faPlus} className="mr-1" />
-                            TAMBAH
+                            {item.quantity != 0
+                                ? (
+                                    <>
+                                        <FontAwesomeIcon icon={faPlus} className="mr-1" />
+                                        TAMBAH
+                                    </>
+                                )
+                                : (
+                                    <>
+                                        Stok Habis
+                                    </>
+                                )}
                         </PrimaryButton>
                     )}
             </div>

@@ -75,7 +75,7 @@ export const DetailModal = (
                             <div className="row-span-3">
                                 <img
                                     className="w-16 h-16 rounded-xl"
-                                    src={data.product.thumbnail}
+                                    src={data.thumbnail}
                                     alt="Sunset in the mountains"
                                 />
                             </div>
@@ -102,7 +102,7 @@ export const DetailModal = (
                                 Harga
                             </div>
                         </div>
-                        <div className="text-lg">{Currency(10000)}</div>
+                        <div className="text-lg">{Currency(order.total_price-order.address_order.fee_shipping)}</div>
                     </div>
                     <div className="grid grid-cols-6">
                         <div className="col-span-3">

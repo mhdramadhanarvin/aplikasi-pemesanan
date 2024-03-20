@@ -15,6 +15,7 @@ export interface ItemOrder {
     id: number;
     product: ItemType;
     quantity: number;
+    thumbnail: string;
     price: number;
     total_price: number;
 }

@@ -30,6 +30,9 @@ class OrderController extends Controller
             $order->format_created_at = Carbon::parse($order->created_at)->format('Y-m-d H:i');
             $order->address_order->origin = json_decode($order->address_order->origin);
             $order->address_order->destination = json_decode($order->address_order->destination);
+            $order->item_orders->map(function ($item_order) {
+                return $item_order->thumbnail = asset('storage/' . $item_order->product->thumbnail);
+            });
         });
         return Inertia::render('HistoryOrder', [
             'orders' => $orders,
@@ -42,7 +45,7 @@ class OrderController extends Controller
      */
     public function create()
     {
-        $products= Product::all();
+        $products = Product::all();
         $products->map(function ($product) {
             $product->thumbnail = asset('storage/' . $product->thumbnail);
         });
@@ -108,7 +111,7 @@ class OrderController extends Controller
             return to_route('history.order');
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error("OrderController: ".$e->getMessage());
+            Log::error("OrderController: " . $e->getMessage());
             return $e->getMessage();
         }
     }
