@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\OrderStatusEnum;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use App\Http\Requests\PaymentOrderRequest;
@@ -13,6 +14,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
+use Throwable;
 
 class OrderController extends Controller
 {
@@ -113,6 +115,32 @@ class OrderController extends Controller
             DB::rollBack();
             Log::error("OrderController: " . $e->getMessage());
             return $e->getMessage();
+        }
+    }
+
+    public function approvePayment(Order $order)
+    {
+        DB::beginTransaction();
+        try {
+            $order->status = OrderStatusEnum::ONPROGRESS;
+            $order->save();
+            DB::commit();
+        } catch (Throwable $error) {
+            DB::rollBack();
+            return $error->getMessage();
+        }
+    }
+
+    public function rejectPayment(Order $order)
+    {
+        DB::beginTransaction();
+        try {
+            $order->status = OrderStatusEnum::CANCELED;
+            $order->save();
+            DB::commit();
+        } catch (Throwable $error) {
+            DB::rollBack();
+            return $error->getMessage();
         }
     }
 
