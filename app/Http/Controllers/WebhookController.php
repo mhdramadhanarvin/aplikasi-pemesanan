@@ -20,9 +20,9 @@ class WebhookController extends Controller
 
                 $whatsappApiLog = WhatsappApiLog::where('response_id', $id)->first();
                 if ($payload == "Konfirmasi Pesanan") {
-                    (new OrderController)->approvePayment($whatsappApiLog->order->id);
+                    (new OrderController)->approvePayment($whatsappApiLog->order);
                 } else if ($payload == "Tolak Pesanan") {
-                    (new OrderController)->rejectPayment($whatsappApiLog->order->id);
+                    (new OrderController)->rejectPayment($whatsappApiLog->order);
                 }
 
                 DB::commit();
