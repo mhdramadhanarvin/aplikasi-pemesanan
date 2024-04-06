@@ -1,22 +1,17 @@
-import Modal from "@/Components/Modal";
 import mapboxgl, { GeolocateControl } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import MapboxDirections from "@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions";
 import "@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions.css";
 import { useEffect, useRef, useState } from "react";
-import SecondaryButton from "../SecondaryButton";
-
 mapboxgl.accessToken =
     "pk.eyJ1IjoiemFuZW15IiwiYSI6ImNsc3J0eXBzMzA3eW4ybm1sZWpsajIzbHUifQ.mEB-n3fUIdgbclKcucRxGA";
 
-interface DropPointModalProps {
-    origin: number[];
-    destination: number[];
-    handleClose: (open: boolean) => void;
+interface DropPointEmbedProps {
+    dropPoint: any;
 }
 
-export const DropPointModal = (
-    { origin, destination, handleClose }: DropPointModalProps,
+const DropPointEmbed = (
+    { dropPoint }: DropPointEmbedProps,
 ) => {
     const mapContainer = useRef<any>(null);
     const map = useRef<mapboxgl.Map | null>(null);
@@ -27,7 +22,7 @@ export const DropPointModal = (
         map.current = new mapboxgl.Map({
             container: mapContainer.current,
             style: "mapbox://styles/mapbox/streets-v12",
-            center: [origin[0], origin[1]],
+            center: [dropPoint["origin"][0], dropPoint["origin"][1]],
             zoom: 12,
             minZoom: 11,
         });
@@ -63,33 +58,23 @@ export const DropPointModal = (
         map.current.addControl(directions, "top-left");
         map.current.on("load", () => {
             geoControll.trigger();
-            directions.setOrigin(origin);
-            directions.setDestination(destination);
+            directions.setOrigin(dropPoint["origin"]);
+            directions.setDestination(dropPoint["destination"]);
         });
         directions.on("route", (e: any) => {
             setDistance((e.route[0].distance * 0.001).toFixed(2));
         });
     });
-
     return (
-        <Modal show={true} onClose={handleClose} maxWidth="2xl">
+        <>
             <div>
-                <div className="p-5">
-                    <h2 className="text-2xl font-bold text-gray-900">
-                        Drop Point Pengantaran
-                    </h2>
-                </div>
-
-                <div className="px-7 py-3 text-center">
-                    <div ref={mapContainer} className="h-[600px] w-full" />
-                    <span className="text-2xl">Jarak : {distance} KM</span>
-                </div>
-                <div className="flex justify-center p-5">
-                    <SecondaryButton onClick={() => handleClose(false)}>
-                        TUTUP
-                    </SecondaryButton>
-                </div>
+                <div ref={mapContainer} className="h-screen w-full" />
+                <span className="absolute top-0 text-center text-2xl font-bold w-full">
+                    Jarak : {distance} KM
+                </span>
             </div>
-        </Modal>
+        </>
     );
 };
+
+export default DropPointEmbed;

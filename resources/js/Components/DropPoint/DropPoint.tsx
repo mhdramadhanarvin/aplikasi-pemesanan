@@ -26,21 +26,20 @@ interface DropPointProps {
 }
 
 export const DropPoint = (
-    { user, setStep, step, dropPoint, setDropPoint }: DropPointProps,
+    { user, setStep, step, setDropPoint }: DropPointProps,
 ) => {
-    const { data, setData, post, processing, errors, setError, clearErrors } =
-        useForm({
-            name: user.name,
-            address: "",
-            phone_number: "",
-            origin: "",
-        });
+    const { data, setData, errors, setError, clearErrors } = useForm({
+        name: user.name,
+        address: "",
+        phone_number: "",
+        origin: "",
+    });
 
     // anthing about map
     const mapContainer = useRef<any>(null);
     const map = useRef<mapboxgl.Map | null>(null);
     const [showDropPoint, setShowDropPoint] = useState<boolean>(false);
-    const [origin, setOrigin] = useState<number[]>([98.705595, 3.576609]);
+    const [origin] = useState<number[]>([98.6674602, 3.5594965]);
     const [destination, setDestination] = useState<number[]>([0, 0]);
     const [distance, setDistance] = useState<number>(0);
     const [valid, setValid] = useState<boolean>(false);

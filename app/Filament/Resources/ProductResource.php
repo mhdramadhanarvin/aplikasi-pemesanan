@@ -37,11 +37,11 @@ class ProductResource extends Resource
                     TextInput::make('price')
                         ->label('Harga')
                         ->prefix('IDR')
-                        ->mask(RawJs::make(
-                            <<<'JS'
-                            $money($input, ',', '.', 2)
-                            JS
-                        ))
+                        // ->mask(RawJs::make(
+                        //     <<<'JS'
+                        //     $money($input, '.', ',', 2)
+                        //     JS
+                        // ))
                         ->required(),
                     TextInput::make('quantity')
                         ->label('Stok')

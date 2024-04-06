@@ -9,10 +9,12 @@ use App\Models\Order;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\Actions;
 use Filament\Infolists\Components\Actions\Action as ActionInfolist;
+use Filament\Infolists\Components\Actions\ActionContainer;
 use Filament\Infolists\Components\Grid;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\RepeatableEntry;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Components\ViewEntry;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\FontWeight;
@@ -75,6 +77,9 @@ class OrderResource extends Resource
                     TextEntry::make('address_order.phone_number')->label('Nomor Whatsapp Pemesan'),
                     TextEntry::make('address_order.address')->label('Alamat Pengantaran'),
                     TextEntry::make('address_order.fee_shipping')->label('Biaya Pengiriman')->money('IDR', locale: 'id'),
+                    ViewEntry::make('proof_of_payment')
+                        ->label('Bukti Pembayaran')
+                        ->view('filament.infolists.entries.proof_of_payment')
                 ]),
                 RepeatableEntry::make('item_orders')->label('Produk')
                     ->columns(4)
@@ -105,6 +110,10 @@ class OrderResource extends Resource
                         ->visible(fn ($record) => $record->status == OrderStatusEnum::WAITING_CONFIRMATION_PAYMENT)
                         ->action(fn (Order $record) => (new OrderController)->rejectPayment($record))
                         ->requiresConfirmation(),
+                    ActionInfolist::make('droppoint')
+                        ->label('Lihat Drop Point')
+                        ->url(fn ($record) => route('order.droppoint', ['order' => $record]))
+                        ->openUrlInNewTab(true)
                 ])->fullWidth(),
             ]);
     }

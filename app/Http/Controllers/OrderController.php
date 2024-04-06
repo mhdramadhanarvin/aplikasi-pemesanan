@@ -144,6 +144,16 @@ class OrderController extends Controller
         }
     }
 
+    public function dropPoint(Order $order)
+    {
+        $order->origin = json_decode($order->address_order->origin);
+        $order->destination = json_decode($order->address_order->destination);
+
+        return Inertia::render('DropPointEmbed', [
+            'dropPoint' => $order,
+        ]);
+    }
+
     /**
      * Display the specified resource.
      */

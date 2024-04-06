@@ -14,6 +14,25 @@ class ProductSeeder extends Seeder
      */
     public function run(): void
     {
-        Product::factory()->count(5)->create();
+        Product::factory()->count(1)->create([
+            'item_name' => 'Bakso',
+            'price' => 1000
+        ]);
+        Product::factory()->count(1)->create([
+            'item_name' => 'Ceker',
+            'price' => 2000
+        ]);
+        Product::factory()->count(1)->create([
+            'item_name' => 'Sosis',
+            'price' => 1000
+        ]);
+        Product::factory()->count(1)->create([
+            'item_name' => 'Hati',
+            'price' => 1000
+        ]);
+        Product::factory()->count(1)->create([
+            'item_name' => 'Tahu',
+            'price' => 1000
+        ]);
     }
 }

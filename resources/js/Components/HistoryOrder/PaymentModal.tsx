@@ -111,7 +111,7 @@ export const PaymentModal = (
                     <TextInput
                         id="file"
                         type="file"
-                        accept="image/*"
+                        accept="image/jpeg,image/jpg,image/png"
                         onChange={handleFileChange}
                         required={true}
                         className="w-full"
