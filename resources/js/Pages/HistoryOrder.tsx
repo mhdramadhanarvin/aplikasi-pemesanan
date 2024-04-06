@@ -1,10 +1,7 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import { PageProps } from "@/types";
-import {
-    OrderStatus,
-    OrderType,
-} from "@/types/OrderType";
+import { OrderStatus, OrderType } from "@/types/OrderType";
 import { Currency } from "@/Common/Currency";
 import PrimaryButton from "@/Components/PrimaryButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -115,6 +112,11 @@ export default function HistoryOrder(
                                 </thead>
 
                                 <tbody className="divide-y divide-gray-200">
+                                    {orders.length == 0 && (
+                                        <tr>
+                                            <td colSpan={5} align="center">Belum ada pesanan</td>
+                                        </tr>
+                                    )}
                                     {orders.map((order: OrderType, key: number) => (
                                         <tr key={key}>
                                             <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
