@@ -5,4 +5,5 @@ export interface DropPointType {
     origin: number[];
     destination: number[];
     fee_shipping: number;
+    duration: number;
 }

@@ -46,8 +46,9 @@ export const DetailModal = (
                                     className="text-blue-500 cursor-pointer mx-1"
                                     onClick={() => setOpenDropPoint(true)}
                                 >
-                                    (Lihat Titik Pengantaran)
+                                    (Lihat Titik)
                                 </span>
+                                <span className="block">Estimasi ~{order.address_order.duration} menit</span>
                                 {openDropPoint && (
                                     <DropPointModal
                                         origin={order.address_order.origin}

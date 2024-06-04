@@ -27,7 +27,7 @@ const CheckoutModal = (
         dropPoint: {},
         totalPrice: 0,
     });
-    const [cart, setCart] = useLocalStorageState<CartType>("cart", {});
+    const [_, setCart] = useLocalStorageState<CartType>("cart", {});
     const submitOrder = () => {
         // set button disable
         // do something here
@@ -46,7 +46,7 @@ const CheckoutModal = (
         setTimeout(() => {
             setPay(false);
             setCart({});
-            handleClose(true)
+            handleClose(true);
             router.post("/create-order", form);
         }, 2000);
     };
@@ -78,7 +78,8 @@ const CheckoutModal = (
                                     {dropPoint.name} ({dropPoint.phone_number})
                                 </span>
                                 <FontAwesomeIcon icon={faLocationDot} className="mr-2" />
-                                {dropPoint.address}
+                                {dropPoint.address}{" "}
+                                <b>(Estimasi ~{dropPoint.duration} Menit)</b>
                             </p>
                         </div>
                     </div>

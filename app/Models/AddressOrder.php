@@ -10,7 +10,7 @@ class AddressOrder extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['order_id', 'name', 'phone_number', 'address', 'origin', 'destination', 'fee_shipping'];
+    protected $fillable = ['order_id', 'name', 'phone_number', 'address', 'origin', 'destination', 'fee_shipping', 'duration'];
 
     public function order(): BelongsTo
     {

@@ -87,6 +87,7 @@ class OrderController extends Controller
                 'origin' => json_encode($request->dropPoint['origin']),
                 'destination' => json_encode($request->dropPoint['destination']),
                 'fee_shipping' => $request->dropPoint['fee_shipping'],
+                'duration' => $request->dropPoint['duration'],
             ]);
             DB::commit();
             return to_route('history.order', $order->id);
@@ -152,6 +153,32 @@ class OrderController extends Controller
         return Inertia::render('DropPointEmbed', [
             'dropPoint' => $order,
         ]);
+    }
+
+    public function delivery(Order $order)
+    {
+        DB::beginTransaction();
+        try {
+            $order->status = OrderStatusEnum::DELIVERY;
+            $order->save();
+            DB::commit();
+        } catch (Throwable $error) {
+            DB::rollBack();
+            return $error->getMessage();
+        }
+    }
+
+    public function complete(Order $order)
+    {
+        DB::beginTransaction();
+        try {
+            $order->status = OrderStatusEnum::DONE;
+            $order->save();
+            DB::commit();
+        } catch (Throwable $error) {
+            DB::rollBack();
+            return $error->getMessage();
+        }
     }
 
     /**

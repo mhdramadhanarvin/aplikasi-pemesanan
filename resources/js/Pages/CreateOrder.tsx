@@ -20,6 +20,7 @@ export default function CreateOrder(
         origin: [0, 0],
         destination: [0, 0],
         fee_shipping: 0,
+        duration: 0,
     });
 
     return (

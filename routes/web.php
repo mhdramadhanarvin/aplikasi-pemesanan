@@ -2,9 +2,9 @@
 
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Foundation\Application;
+// use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
+// use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +28,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/history-order/{id?}', [OrderController::class, 'index'])->name('history.order');
     Route::post('/payment-order/{order}', [OrderController::class, 'payment'])->name('order.payment');
+    Route::post('/complete-order/{order}', [OrderController::class, 'complete'])->name('order.complete');
 });
 
 Route::get('/droppoint/{order}', [OrderController::class, 'dropPoint'])->name('order.droppoint');

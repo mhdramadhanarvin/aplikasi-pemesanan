@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('origin');
             $table->string('destination');
             $table->string('fee_shipping');
+            $table->string('duration');
             $table->timestamps();
         });
     }

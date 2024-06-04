@@ -5,10 +5,15 @@ import { OrderStatus, OrderType } from "@/types/OrderType";
 import { Currency } from "@/Common/Currency";
 import PrimaryButton from "@/Components/PrimaryButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faDollarSign, faEye } from "@fortawesome/free-solid-svg-icons";
+import {
+    faCheck,
+    faDollarSign,
+    faEye,
+} from "@fortawesome/free-solid-svg-icons";
 import { PaymentModal } from "@/Components/HistoryOrder/PaymentModal";
 import { useEffect, useState } from "react";
 import { DetailModal } from "@/Components/HistoryOrder/DetailModal";
+import { CompleteOrderModal } from "@/Components/HistoryOrder/CompleteOrderModal";
 
 export default function HistoryOrder(
     { auth, orders, payOrder }: PageProps<
@@ -175,6 +180,27 @@ export default function HistoryOrder(
                                                         handleClose={handleClose}
                                                         order={detailOrder}
                                                     />
+                                                )}
+                                                {order.status == OrderStatus.DELIVERY && (
+                                                    <>
+                                                        <PrimaryButton
+                                                            className="mx-1"
+                                                            onClick={() => actionOpen(order, "completed")}
+                                                        >
+                                                            <FontAwesomeIcon
+                                                                icon={faCheck}
+                                                                className="mx-2"
+                                                            />
+                                                            Pesanan Selesai
+                                                        </PrimaryButton>
+                                                        {action == "completed" && detailOrder && (
+                                                            <CompleteOrderModal
+                                                                open={action == "completed"}
+                                                                handleClose={handleClose}
+                                                                order={detailOrder}
+                                                            />
+                                                        )}
+                                                    </>
                                                 )}
                                             </td>
                                         </tr>

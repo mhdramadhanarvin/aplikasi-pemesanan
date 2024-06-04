@@ -13,6 +13,7 @@ class WebhookController extends Controller
     {
         DB::beginTransaction();
         try {
+            Log::debug($request->all());
             if ($request->entry) {
                 $response = $request->entry[0]['changes'][0]['value']['messages'][0];
                 $id = $response['context']['id'];

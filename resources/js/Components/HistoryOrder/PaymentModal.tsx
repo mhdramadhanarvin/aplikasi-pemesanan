@@ -82,18 +82,18 @@ export const PaymentModal = (
                     <div className="grid grid-cols-7">
                         <div className="col-span-3">
                             <div className="text-lg">
-                                Nama Bank
+                                Nama E-Wallet
                             </div>
                         </div>
-                        <div className="col-span-4 text-lg">BANK CENTRAL ASIA (BCA)</div>
+                        <div className="col-span-4 text-lg">DANA</div>
                     </div>
                     <div className="grid grid-cols-7">
                         <div className="col-span-3">
                             <div className="text-lg">
-                                Nomor Rekening
+                                Nomor E-Wallet
                             </div>
                         </div>
-                        <div className="text-lg col-span-4">1234 1234 1234</div>
+                        <div className="text-lg col-span-4">0813 6860 0828</div>
                     </div>
                     <div className="grid grid-cols-7">
                         <div className="col-span-3">
@@ -101,7 +101,7 @@ export const PaymentModal = (
                                 Nama Akun
                             </div>
                         </div>
-                        <div className="text-lg col-span-4">MHD. RAMADHAN ARVIN</div>
+                        <div className="text-lg col-span-4">Divya Krisna</div>
                     </div>
                 </div>
                 <div className="py-4">

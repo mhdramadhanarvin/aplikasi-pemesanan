@@ -111,9 +111,23 @@ class OrderResource extends Resource
                         ->action(fn (Order $record) => (new OrderController)->rejectPayment($record))
                         ->requiresConfirmation(),
                     ActionInfolist::make('droppoint')
-                        ->label('Lihat Drop Point')
+                        ->label('Lihat Titik Pengantaran')
                         ->url(fn ($record) => route('order.droppoint', ['order' => $record]))
-                        ->openUrlInNewTab(true)
+                        ->openUrlInNewTab(true),
+                    ActionInfolist::make('delivery')
+                        ->label('Antar Pesanan')
+                        ->icon('gmdi-delivery-dining-o')
+                        ->color('success')
+                        ->visible(fn ($record) => $record->status == OrderStatusEnum::ONPROGRESS)
+                        ->action(fn (Order $record) => (new OrderController)->delivery($record))
+                        ->requiresConfirmation(),
+                    ActionInfolist::make('done')
+                        ->label('Selesaikan Pesanan')
+                        ->icon('heroicon-o-check-badge')
+                        ->color('success')
+                        ->visible(fn ($record) => $record->status == OrderStatusEnum::DELIVERY)
+                        ->action(fn (Order $record) => (new OrderController)->complete($record))
+                        ->requiresConfirmation(),
                 ])->fullWidth(),
             ]);
     }

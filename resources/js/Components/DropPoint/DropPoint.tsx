@@ -42,6 +42,7 @@ export const DropPoint = (
     const [origin] = useState<number[]>([98.6674602, 3.5594965]);
     const [destination, setDestination] = useState<number[]>([0, 0]);
     const [distance, setDistance] = useState<number>(0);
+    const [duration, setDuration] = useState<number>(0);
     const [valid, setValid] = useState<boolean>(false);
 
     useEffect(() => {
@@ -87,9 +88,9 @@ export const DropPoint = (
                 directions.setOrigin(origin); // can be address in form setOrigin("12, Elm Street, NY")
             });
             directions.on("route", (e: any) => {
-                // setOrigin(directions.getOrigin().geometry.coordinates);
                 setDestination(directions.getDestination().geometry.coordinates);
-                setDistance(e.route[0].distance);
+                setDistance(e.route[0].distance * 0.001);
+                setDuration(parseInt((e.route[0].duration / 60).toFixed(0)));
             });
         }
     });
@@ -113,13 +114,21 @@ export const DropPoint = (
 
     const saveDropPoint = () => {
         if (valid) {
+            let fee_shipping: number;
+            let distanceFinal: number = Math.floor(distance);
+            if (distanceFinal < 2) {
+                fee_shipping = 0;
+            } else {
+                fee_shipping = distanceFinal * 8000;
+            }
             setDropPoint({
                 name: data.name,
                 phone_number: data.phone_number,
                 address: data.address,
                 origin,
                 destination,
-                fee_shipping: distance > 5000 ? 15000 : 0,
+                fee_shipping,
+                duration,
             });
             setStep(2);
         }
@@ -192,7 +201,8 @@ export const DropPoint = (
                         <div hidden={!showDropPoint}>
                             <div ref={mapContainer} className="h-[600px] w-full" />
                             <div className="relative w-full text-center">
-                                Klik titik untuk mengatur pengantaran
+                                Klik titik untuk mengatur pengantaran. Jarak :{" "}
+                                {distance.toFixed(2)} KM. Estimasi Pengantaran {duration} Menit
                             </div>
 
                             <PrimaryButton

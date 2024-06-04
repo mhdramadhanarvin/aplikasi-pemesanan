@@ -43,7 +43,7 @@ class SendPaymentConfirmation implements ShouldQueue
                 'response_id' => $response['messages'][0]['id']
             ]);
             DB::commit();
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             Log::error("SendPaymentConfirmation :" . $e->getMessage());
         }
     }
