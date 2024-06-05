@@ -37,4 +37,3 @@ export interface OrderType {
     item_orders: ItemOrder[];
     address_order: AddressOrder;
 }
-

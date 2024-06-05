@@ -21,8 +21,6 @@ export const CompleteOrderModal = (
         post(route("order.complete", order.id), {
             onSuccess: (data) => console.log(data),
         }); // Directly pass FormData object
-        // e.preventDefault();
-        // router.post(route("order.complete"), order.id);
     };
 
     return (

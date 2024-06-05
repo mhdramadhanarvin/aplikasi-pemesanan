@@ -45,6 +45,7 @@ class StoreResource extends Resource
                     ->required(),
                 TimePicker::make('close_hour')
                     ->label("Jam Tutup")
+                    ->format('H:i')
                     ->closeOnDateSelection()
                     ->required(),
                 DateTimePicker::make('temporary_close_until')

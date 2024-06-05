@@ -1,18 +1,26 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import { PageProps } from "@/types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CardItem from "@/Components/CardItem";
 import { ItemType } from "@/types/ItemType";
 import CheckoutButton from "@/Components/Checkout/CheckoutButton";
-import "../../css/create-order.scss";
 import { DropPoint } from "@/Components/DropPoint/DropPoint";
 import { DropPointType } from "@/types/DropPointType";
+import { SettingsType } from "@/types/SettingsType";
+import "../../css/create-order.scss";
+import { CloseStoreModal } from "@/Components/CloseStoreModal";
 
 export default function CreateOrder(
     { auth, products }: PageProps<{ products: ItemType[] }>,
 ) {
     const [step, setSteps] = useState<number>(1);
+    const [storeSetting, setStoreSetting] = useState<SettingsType>({
+        open_hour: "",
+        close_hour: "",
+        temporary_close_until: null,
+        is_open: false,
+    });
     const [dropPoint, setDropPoint] = useState<DropPointType>({
         name: "",
         phone_number: "",
@@ -22,6 +30,25 @@ export default function CreateOrder(
         fee_shipping: 0,
         duration: 0,
     });
+
+    const fetchData = async () => {
+        return await fetch("/settings")
+            .then((res) => res.json())
+            .then((json) => {
+                return json;
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    };
+
+    useEffect(() => {
+        // fetchData();
+        (async () => {
+            const getSetting = await fetchData();
+            setStoreSetting(getSetting);
+        })();
+    }, [storeSetting]);
 
     return (
         <AuthenticatedLayout
@@ -33,6 +60,8 @@ export default function CreateOrder(
             }
         >
             <Head title="Buat Pesanan" />
+
+            <CloseStoreModal setting={storeSetting}/>
 
             <DropPoint
                 user={auth.user}
