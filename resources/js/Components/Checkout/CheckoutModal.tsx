@@ -50,6 +50,9 @@ const CheckoutModal = (
             router.post("/create-order", form);
         }, 2000);
     };
+    const isMinimumOrder = () => {
+        return totalPrice >= 10000;
+    };
 
     useEffect(() => {
         setForm({
@@ -154,9 +157,14 @@ const CheckoutModal = (
                         </div>
                     </div>
                 </div>
+                {!isMinimumOrder() && (
+                    <div className="block py-3 font-bold text-red-500">
+                        Belum memenuhi minimum order
+                    </div>
+                )}
                 <div className="flex justify-center pt-5">
                     <PrimaryButton
-                        disabled={pay}
+                        disabled={pay || !isMinimumOrder()}
                         onClick={() => {
                             submitOrder();
                         }}
