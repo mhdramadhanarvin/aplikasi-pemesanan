@@ -18,7 +18,7 @@ export default function CreateOrder(
     const [storeSetting, setStoreSetting] = useState<SettingsType>({
         open_hour: "",
         close_hour: "",
-        temporary_close_until: null,
+        temporary_close_until: new Date(),
         is_open: false,
     });
     const [dropPoint, setDropPoint] = useState<DropPointType>({
