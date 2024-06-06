@@ -19,7 +19,7 @@ export default function CreateOrder(
         open_hour: "",
         close_hour: "",
         temporary_close_until: new Date(),
-        is_open: false,
+        is_open: true,
     });
     const [dropPoint, setDropPoint] = useState<DropPointType>({
         name: "",

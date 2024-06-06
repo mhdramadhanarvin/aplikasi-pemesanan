@@ -43,18 +43,20 @@ export const CloseStoreModal = (
         setOpen(false);
         setCloseType("");
 
-        if (isTempClose()) {
-            console.log("SEDANG TEMPORARY CLOSE");
-            setOpen(true);
-            setCloseType("temporary_close");
-        } else {
-            if (!isOfficeHour()) {
-                console.log("DILUAR OFFICE HOUR");
+        if (setting.open_hour != "" && setting.close_hour != "") {
+            if (isTempClose()) {
+                console.log("SEDANG TEMPORARY CLOSE");
                 setOpen(true);
-                setCloseType("office_hour");
+                setCloseType("temporary_close");
+            } else {
+                if (!isOfficeHour()) {
+                    console.log("DILUAR OFFICE HOUR");
+                    setOpen(true);
+                    setCloseType("office_hour");
+                }
             }
         }
-    });
+    }, [setting]);
 
     return (
         <Modal show={open} onClose={handleClose} maxWidth="md">
