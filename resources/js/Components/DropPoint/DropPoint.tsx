@@ -119,7 +119,7 @@ export const DropPoint = (
             if (distanceFinal < 2) {
                 fee_shipping = 0;
             } else {
-                fee_shipping = distanceFinal * 8000;
+                fee_shipping = (distanceFinal - 2) * 8000;
             }
             setDropPoint({
                 name: data.name,
