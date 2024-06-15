@@ -13,7 +13,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         $schedule->command('app:cancel-order-expired')->everyMinute()->sendOutputTo('/var/www/html/schedule.log');
-        $schedule->command('queue:work')->everyMinute()->sendOutputTo('/var/www/html/queue.log');
+        $schedule->command('queue:work')->everyTwoMinutes()->sendOutputTo('/var/www/html/queue.log');
     }
 
     /**
