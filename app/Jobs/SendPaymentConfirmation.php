@@ -32,17 +32,23 @@ class SendPaymentConfirmation implements ShouldQueue
     {
         DB::beginTransaction();
         try {
-            $whatsappAPI->setTo(6282367057520);
+            $whatsappAPI->setTo(env("WHATSAPP_NUMBER"));
             $whatsappAPI->setTemplateName("neworder2");
             $order = Order::withCount('item_orders')->with('item_orders', 'address_order')->find($this->order->id);
             $orderAddress = $order->address_order;
             $image = Str::remove('public/', asset('storage/' . $order->proof_of_payment));
             $whatsappAPI->setTemplateComponent($image, $orderAddress->name, $orderAddress->phone_number, $orderAddress->address, $order->item_orders_count, $order->total_price);
             $response = $whatsappAPI->sendMessage();
-            $order->whatsapp_api_logs()->create([
-                'response_id' => $response['messages'][0]['id']
-            ]);
-            DB::commit();
+            if (!$response(['message'][0])) {
+                Log::error("SendPaymentConfirmation Error :");
+                Log::error($response);
+                DB::rollBack();
+            } else {
+                $order->whatsapp_api_logs()->create([
+                    'response_id' => $response['messages'][0]['id']
+                ]);
+                DB::commit();
+            }
         } catch (\Throwable $e) {
             Log::error("SendPaymentConfirmation :" . $e->getMessage());
         }
