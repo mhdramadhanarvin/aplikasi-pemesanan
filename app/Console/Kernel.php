@@ -12,8 +12,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->command('app:cancel-order-expired')->everyMinute()->sendOutputTo('/var/www/html/schedule.log');
-        $schedule->command('queue:work --stop-when-empty')->everyMinute()->withoutOverlapping()->sendOutputTo('/var/www/html/queue.log');
+        $schedule->command('app:cancel-order-expired')->everyMinute()->sendOutputTo(getcwd()."/scheduler.log");
+        $schedule->command('queue:work --stop-when-empty')->everyMinute()->withoutOverlapping()->sendOutputTo(getcwd()."/queue.log");
     }
 
     /**
