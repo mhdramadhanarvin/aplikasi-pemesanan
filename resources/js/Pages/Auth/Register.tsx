@@ -1,10 +1,13 @@
-import { useEffect, FormEventHandler } from 'react';
+import { useEffect, FormEventHandler, useState } from 'react';
 import GuestLayout from '@/Layouts/GuestLayout';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
+import Label from '@/Components/Label';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -13,6 +16,8 @@ export default function Register() {
         password: '',
         password_confirmation: '',
     });
+
+    const [showPassword, setShowPassword] = useState<boolean>(false)
 
     useEffect(() => {
         return () => {
@@ -65,12 +70,11 @@ export default function Register() {
                     <InputError message={errors.email} className="mt-2" />
                 </div>
 
-                <div className="mt-4">
+                <div className="mt-4 relative">
                     <InputLabel htmlFor="password" value="Password" />
-
                     <TextInput
                         id="password"
-                        type="password"
+                        type={showPassword ? 'text' : 'password'}
                         name="password"
                         value={data.password}
                         className="mt-1 block w-full"
@@ -78,16 +82,22 @@ export default function Register() {
                         onChange={(e) => setData('password', e.target.value)}
                         required
                     />
+                    {!showPassword ? (
+                        <FontAwesomeIcon icon={faEye} className="absolute right-4 top-9" onClick={()=>setShowPassword(!showPassword)}/>
+                    ) : (
+                        <FontAwesomeIcon icon={faEyeSlash} className="absolute right-4 top-9" onClick={()=>setShowPassword(!showPassword)}/>
+                    )}
+                    <Label> Kombinasi huruf dan angka, dengan minimal 8 karakter </Label>
 
                     <InputError message={errors.password} className="mt-2" />
                 </div>
 
-                <div className="mt-4">
+                <div className="mt-4 relative">
                     <InputLabel htmlFor="password_confirmation" value="Confirm Password" />
 
                     <TextInput
                         id="password_confirmation"
-                        type="password"
+                        type={showPassword ? 'text' : 'password'}
                         name="password_confirmation"
                         value={data.password_confirmation}
                         className="mt-1 block w-full"

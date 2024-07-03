@@ -45,7 +45,7 @@ const CheckoutButton = ({ show, dropPoint }: CheckoutButtonProps) => {
                             className="text-xl pl-5 pr-7"
                         />
                     </div>
-                    <div className="col-span-2 text-md">{productsCount} Item</div>
+                    <div className="col-span-2 text-md">{productsCount} Menu</div>
                     <div className="row-span-2 col-span-2 text-lg">
                         {Currency(totalPrice)}
                     </div>

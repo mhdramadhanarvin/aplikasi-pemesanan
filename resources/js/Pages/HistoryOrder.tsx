@@ -16,7 +16,7 @@ import { DetailModal } from "@/Components/HistoryOrder/DetailModal";
 import { CompleteOrderModal } from "@/Components/HistoryOrder/CompleteOrderModal";
 
 export default function HistoryOrder(
-    { auth, orders, payOrder }: PageProps<
+    { orders, payOrder }: PageProps<
         { orders: OrderType[]; payOrder: OrderType | null }
     >,
 ) {
@@ -83,14 +83,7 @@ export default function HistoryOrder(
     }, [payOrder]);
 
     return (
-        <AuthenticatedLayout
-            user={auth.user}
-            header={
-                <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    Riwayat Pesanan
-                </h2>
-            }
-        >
+        <>
             <Head title="Riwayat Pesanan" />
 
             <div className="py-12">
@@ -128,7 +121,7 @@ export default function HistoryOrder(
                                                 {order.format_created_at}
                                             </td>
                                             <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                                                {order.item_orders_count} Item
+                                                {order.item_orders_count} Menu
                                             </td>
                                             <td className="whitespace-nowrap px-4 py-2 text-gray-700">
                                                 {Currency(order.total_price)}
@@ -211,6 +204,13 @@ export default function HistoryOrder(
                     </div>
                 </div>
             </div>
-        </AuthenticatedLayout>
+        </>
     );
 }
+
+HistoryOrder.layout = (page: React.ReactNode) => (
+    <AuthenticatedLayout
+        title="Riwayat Pesanan"
+        children={page}
+    />
+);

@@ -1,4 +1,4 @@
-import { FormEventHandler, useEffect } from "react";
+import { FormEventHandler, useEffect, useState } from "react";
 import Checkbox from "@/Components/Checkbox";
 import GuestLayout from "@/Layouts/GuestLayout";
 import InputError from "@/Components/InputError";
@@ -6,6 +6,8 @@ import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
 import { Head, Link, useForm } from "@inertiajs/react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 export default function Login(
     { status, canResetPassword }: { status?: string; canResetPassword: boolean },
@@ -15,6 +17,8 @@ export default function Login(
         password: "",
         remember: false,
     });
+
+    const [showPassword, setShowPassword] = useState<boolean>(false)
 
     useEffect(() => {
         return () => {
@@ -54,18 +58,23 @@ export default function Login(
                     <InputError message={errors.email} className="mt-2" />
                 </div>
 
-                <div className="mt-4">
+                <div className="mt-4 relative">
                     <InputLabel htmlFor="password" value="Password" />
 
                     <TextInput
                         id="password"
-                        type="password"
+                        type={showPassword ? 'text' : 'password'}
                         name="password"
                         value={data.password}
                         className="mt-1 block w-full"
                         autoComplete="current-password"
                         onChange={(e) => setData("password", e.target.value)}
                     />
+                    {!showPassword ? (
+                        <FontAwesomeIcon icon={faEye} className="absolute right-4 top-9" onClick={()=>setShowPassword(!showPassword)}/>
+                    ) : (
+                        <FontAwesomeIcon icon={faEyeSlash} className="absolute right-4 top-9" onClick={()=>setShowPassword(!showPassword)}/>
+                    )}
 
                     <InputError message={errors.password} className="mt-2" />
                 </div>

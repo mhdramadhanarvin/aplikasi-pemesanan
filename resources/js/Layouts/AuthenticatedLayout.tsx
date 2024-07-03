@@ -3,14 +3,16 @@ import ApplicationLogo from "@/Components/ApplicationLogo";
 import Dropdown from "@/Components/Dropdown";
 import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
-import { Link } from "@inertiajs/react";
-import { User } from "@/types";
+import { Link, usePage } from "@inertiajs/react";
+import { PageProps } from "@/types";
 
 export default function Authenticated(
-    { user, header, children }: PropsWithChildren<
-        { user: User; header?: ReactNode }
+    { title, children }: PropsWithChildren<
+        { title?: ReactNode }
     >,
 ) {
+    const { auth } = usePage<PageProps>().props;
+
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(
         false,
     );
@@ -54,7 +56,7 @@ export default function Authenticated(
                                                 type="button"
                                                 className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
                                             >
-                                                {user.name}
+                                                {auth.user.name}
 
                                                 <svg
                                                     className="ms-2 -me-0.5 h-4 w-4"
@@ -142,10 +144,10 @@ export default function Authenticated(
                     <div className="pt-4 pb-1 border-t border-gray-200">
                         <div className="px-4">
                             <div className="font-medium text-base text-gray-800">
-                                {user.name}
+                                {auth.user.name}
                             </div>
                             <div className="font-medium text-sm text-gray-500">
-                                {user.email}
+                                {auth.user.email}
                             </div>
                         </div>
 
@@ -165,13 +167,13 @@ export default function Authenticated(
                 </div>
             </nav>
 
-            {header && (
-                <header className="bg-white shadow">
-                    <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {header}
-                    </div>
-                </header>
-            )}
+            <header className="bg-white shadow">
+                <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                    <h2 className="font-semibold text-xl text-gray-800 leading-tight">
+                        {title}
+                    </h2>
+                </div>
+            </header>
 
             <main>{children}</main>
         </div>
