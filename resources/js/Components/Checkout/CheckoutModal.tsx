@@ -16,10 +16,12 @@ interface CheckoutModalProps {
     products: ItemType[];
     totalPrice: number;
     dropPoint: DropPointType;
+    setDropPoint: (dropPoint: DropPointType) => void;
+    setStep: (step: number) => void;
 }
 
 const CheckoutModal = (
-    { open, handleClose, products, totalPrice, dropPoint }: CheckoutModalProps,
+    { open, handleClose, products, totalPrice, dropPoint, setDropPoint, setStep }: CheckoutModalProps,
 ) => {
     const [pay, setPay] = useState<boolean>(false);
     const [form, setForm] = useState({
@@ -47,6 +49,16 @@ const CheckoutModal = (
             setPay(false);
             setCart({});
             handleClose(true);
+            setDropPoint({
+                name: "",
+                phone_number: "",
+                address: "",
+                origin: [0, 0],
+                destination: [0, 0],
+                fee_shipping: 0,
+                duration: 0,
+            })
+            setStep(1)
             router.post("/create-order", form);
         }, 2000);
     };

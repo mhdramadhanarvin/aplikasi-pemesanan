@@ -86,7 +86,7 @@ export default function CreateOrder(
                 </>
             )}
 
-            {step == 2 && <CheckoutButton show={step == 2} dropPoint={dropPoint} />}
+            {step == 2 && <CheckoutButton show={step == 2} dropPoint={dropPoint} setDropPoint={setDropPoint} setStep={setSteps}/>}
         </>
     );
 }

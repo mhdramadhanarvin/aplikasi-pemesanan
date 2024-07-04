@@ -26,13 +26,13 @@ interface DropPointProps {
 }
 
 export const DropPoint = (
-    { user, setStep, step, setDropPoint }: DropPointProps,
+    { user, setStep, step, dropPoint, setDropPoint }: DropPointProps,
 ) => {
     const { data, setData, errors, setError, clearErrors } = useForm({
         name: user.name,
-        address: "",
-        phone_number: "",
-        origin: "",
+        address: dropPoint.address,
+        phone_number: dropPoint.phone_number,
+        origin: dropPoint.origin,
     });
 
     // anthing about map
