@@ -75,6 +75,12 @@ export default function HistoryOrder(
         }
     };
 
+    const formatDate = (date:string): string => {
+        const fullDate = new Date(date).toLocaleString('id-ID')
+        const replaceDot = fullDate.replace('.', ':')
+        return replaceDot.replace(',' , '')
+    }
+
     useEffect(() => {
         if (payOrder) {
             setAction("pay");
@@ -118,7 +124,7 @@ export default function HistoryOrder(
                                     {orders.map((order: OrderType, key: number) => (
                                         <tr key={key}>
                                             <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                                                {order.format_created_at}
+                                                {formatDate(order.format_created_at)}
                                             </td>
                                             <td className="whitespace-nowrap px-4 py-2 text-gray-700">
                                                 {order.item_orders_count} Menu
