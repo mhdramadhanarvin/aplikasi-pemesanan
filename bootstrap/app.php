@@ -11,6 +11,11 @@
 |
 */
 
+use App\Http\Middleware\HandleInertiaRequests;
+use GuzzleHttp\Middleware as GuzzleHttpMiddleware;
+use Illuminate\Routing\Controllers\Middleware as ControllersMiddleware;
+use Inertia\Middleware;
+
 $app = new Illuminate\Foundation\Application(
     $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
 );
@@ -40,6 +45,12 @@ $app->singleton(
     Illuminate\Contracts\Debug\ExceptionHandler::class,
     App\Exceptions\Handler::class
 );
+
+// $app->withMiddleware(function (GuzzleHttpMiddleware$middleware) {
+//     $middleware->web(append: [
+//         HandleInertiaRequests::class,
+//     ]);
+// });
 
 /*
 |--------------------------------------------------------------------------

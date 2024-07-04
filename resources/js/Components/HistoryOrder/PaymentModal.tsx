@@ -45,6 +45,12 @@ export const PaymentModal = (
         }); // Directly pass FormData object
     };
 
+    const formatDate = (date:string): string => {
+        const fullDate = new Date(date).toLocaleString('id-ID')
+        const replaceDot = fullDate.replace('.', ':')
+        return replaceDot.replace(',' , '')
+    }
+
     return (
         <Modal show={open} onClose={() => { }} maxWidth="lg">
             <div className="px-7 py-5">
@@ -69,7 +75,7 @@ export const PaymentModal = (
                     <div className="py-2">
                         <p className="text-lg text-gray-900">
                             Silahkan lakukan pembayaran ke bank dibawah ini sebelum
-                            <span className="font-bold ml-1">{order.payment_expired_at}</span>
+                            <span className="font-bold ml-1">{formatDate(order.payment_expired_at)}</span>
                         </p>
 
                         <div className="text-center w-full text-3xl p-3">
@@ -101,7 +107,7 @@ export const PaymentModal = (
                                 Nama Akun
                             </div>
                         </div>
-                        <div className="text-lg col-span-4">Divya Krisna</div>
+                        <div className="text-lg col-span-4">Bakso Bakar Asoy Geboy</div>
                     </div>
                 </div>
                 <div className="py-4">

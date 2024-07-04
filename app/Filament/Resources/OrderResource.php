@@ -42,7 +42,7 @@ class OrderResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('created_at')->label('Tanggal Pemesanan'),
+                TextColumn::make('created_at')->label('Tanggal Pemesanan')->dateTime("d M Y H:i"),
                 TextColumn::make('address_order.name')->label('Nama Pemesanan'),
                 TextColumn::make('item_orders_count')->label('Jumlah Pesanan')->counts('item_orders')->suffix(" Item"),
                 TextColumn::make('total_price')->label('Total Harga')

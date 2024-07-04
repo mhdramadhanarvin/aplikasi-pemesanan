@@ -1,14 +1,17 @@
-import { useRef, FormEventHandler } from 'react';
+import { useRef, FormEventHandler, useState } from 'react';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { useForm } from '@inertiajs/react';
 import { Transition } from '@headlessui/react';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export default function UpdatePasswordForm({ className = '' }: { className?: string }) {
     const passwordInput = useRef<HTMLInputElement>(null);
     const currentPasswordInput = useRef<HTMLInputElement>(null);
+    const [showPassword, setShowPassword] = useState<boolean>(false)
 
     const { data, setData, errors, put, reset, processing, recentlySuccessful } = useForm({
         current_password: '',
@@ -63,7 +66,7 @@ export default function UpdatePasswordForm({ className = '' }: { className?: str
                     <InputError message={errors.current_password} className="mt-2" />
                 </div>
 
-                <div>
+                <div className="relative">
                     <InputLabel htmlFor="password" value="New Password" />
 
                     <TextInput
@@ -71,10 +74,15 @@ export default function UpdatePasswordForm({ className = '' }: { className?: str
                         ref={passwordInput}
                         value={data.password}
                         onChange={(e) => setData('password', e.target.value)}
-                        type="password"
+                        type={showPassword ? 'text' : 'password'}
                         className="mt-1 block w-full"
                         autoComplete="new-password"
                     />
+                    {!showPassword ? (
+                        <FontAwesomeIcon icon={faEye} className="absolute right-4 top-9" onClick={()=>setShowPassword(!showPassword)}/>
+                    ) : (
+                        <FontAwesomeIcon icon={faEyeSlash} className="absolute right-4 top-9" onClick={()=>setShowPassword(!showPassword)}/>
+                    )}
 
                     <InputError message={errors.password} className="mt-2" />
                 </div>
@@ -86,7 +94,7 @@ export default function UpdatePasswordForm({ className = '' }: { className?: str
                         id="password_confirmation"
                         value={data.password_confirmation}
                         onChange={(e) => setData('password_confirmation', e.target.value)}
-                        type="password"
+                        type={showPassword ? 'text' : 'password'}
                         className="mt-1 block w-full"
                         autoComplete="new-password"
                     />
