@@ -11,9 +11,11 @@ import { DropPointType } from "@/types/DropPointType";
 interface CheckoutButtonProps {
     show: boolean;
     dropPoint: DropPointType;
+    setDropPoint: (dropPoint: DropPointType) => void;
+    setStep: (step: number) => void;
 }
 
-const CheckoutButton = ({ show, dropPoint }: CheckoutButtonProps) => {
+const CheckoutButton = ({ show, dropPoint, setDropPoint, setStep }: CheckoutButtonProps) => {
     const [cart] = useLocalStorageState<CartType>("cart", {});
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
@@ -57,6 +59,8 @@ const CheckoutButton = ({ show, dropPoint }: CheckoutButtonProps) => {
                         products={getProducts()}
                         totalPrice={totalPrice}
                         dropPoint={dropPoint}
+                        setDropPoint={setDropPoint}
+                        setStep={setStep}
                     />
                 )}
             </div>
