@@ -11,6 +11,7 @@ import "../../css/create-order.scss";
 import { CloseStoreModal } from "@/Components/CloseStoreModal";
 import { MinimumOrderModal } from "@/Components/MinimumOrderModal";
 import useLocalStorageState from "use-local-storage-state";
+import { Head } from "@inertiajs/react";
 
 export default function CreateOrder(
     { auth, products }: PageProps<{ products: ItemType[] }>,
@@ -55,6 +56,7 @@ export default function CreateOrder(
 
     return (
         <>
+            <Head title="Buat Pesanan" />
             <CloseStoreModal setting={storeSetting} />
             <DropPoint
                 user={auth.user}
