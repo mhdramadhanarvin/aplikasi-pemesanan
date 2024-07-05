@@ -1,17 +1,17 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { PageProps } from "@/types";
+import { Head, router } from "@inertiajs/react";
 import { useEffect, useState } from "react";
+import useLocalStorageState from "use-local-storage-state";
 import CardItem from "@/Components/CardItem";
-import { ItemType } from "@/types/ItemType";
 import CheckoutButton from "@/Components/Checkout/CheckoutButton";
 import { DropPoint } from "@/Components/DropPoint/DropPoint";
-import { DropPointType } from "@/types/DropPointType";
-import { SettingsType } from "@/types/SettingsType";
-import "../../css/create-order.scss";
 import { CloseStoreModal } from "@/Components/CloseStoreModal";
 import { MinimumOrderModal } from "@/Components/MinimumOrderModal";
-import useLocalStorageState from "use-local-storage-state";
-import { Head } from "@inertiajs/react";
+import { PageProps } from "@/types";
+import { DropPointType } from "@/types/DropPointType";
+import { SettingsType } from "@/types/SettingsType";
+import { ItemType } from "@/types/ItemType";
+import "../../css/create-order.scss";
 
 export default function CreateOrder(
     { auth, products }: PageProps<{ products: ItemType[] }>,
@@ -25,34 +25,50 @@ export default function CreateOrder(
         temporary_close_until: new Date(),
         is_open: true,
     });
-    const [dropPoint, setDropPoint] = useLocalStorageState<DropPointType>("dropPointDetail", {
-        defaultValue: {
-            name: "",
-            phone_number: "",
-            address: "",
-            origin: [0, 0],
-            destination: [0, 0],
-            fee_shipping: 0,
-            duration: 0,
-        }
-    });
-
-    const fetchData = async () => {
-        return await fetch("/settings")
-            .then((res) => res.json())
-            .then((json) => {
-                return json;
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-    };
+    const [dropPoint, setDropPoint] = useLocalStorageState<DropPointType>(
+        "dropPointDetail",
+        {
+            defaultValue: {
+                name: "",
+                phone_number: "",
+                address: "",
+                origin: [0, 0],
+                destination: [0, 0],
+                fee_shipping: 0,
+                duration: 0,
+            },
+        },
+    );
 
     useEffect(() => {
-        (async () => {
-            setStoreSetting(await fetchData());
-        })();
-    }, []);
+        const fetchData = async () => {
+            return await fetch("/settings")
+                .then((res) => res.json())
+                .then((data) => {
+                    setStoreSetting(data);
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        };
+
+        fetchData();
+
+        router.on("start", (event) => {
+            if (event.detail.visit?.url.pathname === "/logout") {
+                setDropPoint({
+                    name: "",
+                    phone_number: "",
+                    address: "",
+                    origin: [0, 0],
+                    destination: [0, 0],
+                    fee_shipping: 0,
+                    duration: 0,
+                });
+                setSteps(1);
+            }
+        });
+    }, [dropPoint, step]);
 
     return (
         <>
@@ -68,7 +84,7 @@ export default function CreateOrder(
 
             {step == 2 && (
                 <>
-                    <MinimumOrderModal />
+                    <MinimumOrderModal user_id={auth.user.id}/>
                     <div className="py-12" hidden={step != 2}>
                         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                             <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg p-5">
@@ -88,7 +104,14 @@ export default function CreateOrder(
                 </>
             )}
 
-            {step == 2 && <CheckoutButton show={step == 2} dropPoint={dropPoint} setDropPoint={setDropPoint} setStep={setSteps}/>}
+            {step == 2 && (
+                <CheckoutButton
+                    show={step == 2}
+                    dropPoint={dropPoint}
+                    setDropPoint={setDropPoint}
+                    setStep={setSteps}
+                />
+            )}
         </>
     );
 }

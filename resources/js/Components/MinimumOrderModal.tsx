@@ -2,16 +2,27 @@ import useLocalStorageState from "use-local-storage-state";
 import Modal from "./Modal";
 import PrimaryButton from "./PrimaryButton";
 
-export const MinimumOrderModal = () => {
-    const [open, setOpen] = useLocalStorageState<boolean>("infoMinimumOrder", {
-        defaultValue: true,
+interface showModal {
+    status: boolean,
+    user_id: string
+}
+
+export const MinimumOrderModal = ({ user_id }) => {
+    const [open, setOpen] = useLocalStorageState<showModal>("infoMinimumOrder", {
+        defaultValue: {
+            status: true,
+            user_id: ""
+        },
     });
     const handleClose = () => {
-        setOpen(!open);
+        setOpen({
+            status: !open.status,
+            user_id: user_id
+        });
     };
 
     return (
-        <Modal show={open} onClose={handleClose} maxWidth="md">
+        <Modal show={open.status || open.user_id != user_id} onClose={handleClose} maxWidth="md">
             <div>
                 <div className="p-5">
                     <h2 className="text-2xl font-bold text-gray-900">

@@ -74,7 +74,7 @@ export const PaymentModal = (
                 <div className="">
                     <div className="py-2">
                         <p className="text-lg text-gray-900">
-                            Silahkan lakukan pembayaran ke bank dibawah ini sebelum
+                            Silahkan lakukan pembayaran dibawah ini sebelum
                             <span className="font-bold ml-1">{formatDate(order.payment_expired_at)}</span>
                         </p>
 
