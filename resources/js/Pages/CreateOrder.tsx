@@ -1,6 +1,6 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, router } from "@inertiajs/react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import useLocalStorageState from "use-local-storage-state";
 import CardItem from "@/Components/CardItem";
 import CheckoutButton from "@/Components/Checkout/CheckoutButton";
@@ -39,22 +39,24 @@ export default function CreateOrder(
             },
         },
     );
+    const memoizedDropPoint = useMemo(() => dropPoint, [dropPoint]);
+    const memoizedSetDropPoint = useCallback(setDropPoint, [setDropPoint]);
+    const memoizedSetSteps = useCallback(setSteps, [setSteps]);
 
     useEffect(() => {
         const fetchData = async () => {
-            return await fetch("/settings")
-                .then((res) => res.json())
-                .then((data) => {
-                    setStoreSetting(data);
-                })
-                .catch((error) => {
-                    console.error(error);
-                });
+            try {
+                const res = await fetch("/settings");
+                const data = await res.json();
+                setStoreSetting(data);
+            } catch (error) {
+                console.error(error);
+            }
         };
 
         fetchData();
 
-        router.on("start", (event) => {
+        const handleRouterStart = (event: any) => {
             if (event.detail.visit?.url.pathname === "/logout") {
                 setDropPoint({
                     name: "",
@@ -67,8 +69,14 @@ export default function CreateOrder(
                 });
                 setSteps(1);
             }
-        });
-    }, [dropPoint, step]);
+        };
+
+        router.on("start", handleRouterStart);
+
+        // return () => {
+        //     router.off("start", handleRouterStart);
+        // };
+    }, []);
 
     return (
         <>
@@ -77,14 +85,14 @@ export default function CreateOrder(
             <DropPoint
                 user={auth.user}
                 step={step}
-                setStep={setSteps}
-                dropPoint={dropPoint}
-                setDropPoint={setDropPoint}
+                setStep={memoizedSetSteps}
+                dropPoint={memoizedDropPoint}
+                setDropPoint={memoizedSetDropPoint}
             />
 
             {step == 2 && (
                 <>
-                    <MinimumOrderModal user_id={auth.user.id}/>
+                    <MinimumOrderModal user_id={auth.user.id} />
                     <div className="py-12" hidden={step != 2}>
                         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                             <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg p-5">
