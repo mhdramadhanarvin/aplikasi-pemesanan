@@ -33,7 +33,7 @@ class SendPaymentConfirmation implements ShouldQueue
     {
         DB::beginTransaction();
         try {
-            $whatsappAPI->setTo(env('WHATSAPP_NUMBER'));
+            $whatsappAPI->setTo(config('app.whatsapp_number'));
             $whatsappAPI->setTemplateName("neworder2");
             $order = Order::withCount('item_orders')->with('item_orders', 'address_order')->find($this->order->id);
             $orderAddress = $order->address_order;
