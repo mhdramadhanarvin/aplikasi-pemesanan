@@ -6,10 +6,10 @@ use App\Enums\OrderStatusEnum;
 use App\Filament\Resources\OrderResource\Pages;
 use App\Http\Controllers\OrderController;
 use App\Models\Order;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\Actions;
 use Filament\Infolists\Components\Actions\Action as ActionInfolist;
-use Filament\Infolists\Components\Actions\ActionContainer;
 use Filament\Infolists\Components\Grid;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\RepeatableEntry;
@@ -20,7 +20,10 @@ use Filament\Resources\Resource;
 use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class OrderResource extends Resource
 {
@@ -50,7 +53,24 @@ class OrderResource extends Resource
                 TextColumn::make('status')->badge(),
             ])
             ->filters([
-                //
+                Filter::make('created_at')
+                    ->form([
+                        DatePicker::make('created_from')->label('Tanggal Awal'),
+                        DatePicker::make('created_until')->label('Tanggal Akhir'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['created_from'],
+                                fn(Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date),
+                            )
+                            ->when(
+                                $data['created_until'],
+                                fn(Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
+                            );
+                    }),
+                SelectFilter::make('status')
+                    ->options(OrderStatusEnum::class)
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
@@ -101,32 +121,32 @@ class OrderResource extends Resource
                     ActionInfolist::make('approve')->label('Konfirmasi Pembayaran')
                         ->icon('heroicon-c-check')
                         ->color('success')
-                        ->visible(fn ($record) => $record->status == OrderStatusEnum::WAITING_CONFIRMATION_PAYMENT)
-                        ->action(fn (Order $record) => (new OrderController)->approvePayment($record))
+                        ->visible(fn($record) => $record->status == OrderStatusEnum::WAITING_CONFIRMATION_PAYMENT)
+                        ->action(fn(Order $record) => (new OrderController)->approvePayment($record))
                         ->requiresConfirmation(),
                     ActionInfolist::make('reject')->label("Tolak Pembayaran")
                         ->icon('heroicon-c-x-mark')
                         ->color('danger')
-                        ->visible(fn ($record) => $record->status == OrderStatusEnum::WAITING_CONFIRMATION_PAYMENT)
-                        ->action(fn (Order $record) => (new OrderController)->rejectPayment($record))
+                        ->visible(fn($record) => $record->status == OrderStatusEnum::WAITING_CONFIRMATION_PAYMENT)
+                        ->action(fn(Order $record) => (new OrderController)->rejectPayment($record))
                         ->requiresConfirmation(),
                     ActionInfolist::make('droppoint')
                         ->label('Lihat Titik Pengantaran')
-                        ->url(fn ($record) => route('order.droppoint', ['order' => $record]))
+                        ->url(fn($record) => route('order.droppoint', ['order' => $record]))
                         ->openUrlInNewTab(true),
                     ActionInfolist::make('delivery')
                         ->label('Antar Pesanan')
                         ->icon('gmdi-delivery-dining-o')
                         ->color('success')
-                        ->visible(fn ($record) => $record->status == OrderStatusEnum::ONPROGRESS)
-                        ->action(fn (Order $record) => (new OrderController)->delivery($record))
+                        ->visible(fn($record) => $record->status == OrderStatusEnum::ONPROGRESS)
+                        ->action(fn(Order $record) => (new OrderController)->delivery($record))
                         ->requiresConfirmation(),
                     ActionInfolist::make('done')
                         ->label('Selesaikan Pesanan')
                         ->icon('heroicon-o-check-badge')
                         ->color('success')
-                        ->visible(fn ($record) => $record->status == OrderStatusEnum::DELIVERY)
-                        ->action(fn (Order $record) => (new OrderController)->complete($record))
+                        ->visible(fn($record) => $record->status == OrderStatusEnum::DELIVERY)
+                        ->action(fn(Order $record) => (new OrderController)->complete($record))
                         ->requiresConfirmation(),
                 ])->fullWidth(),
             ]);
